@@ -1,0 +1,26 @@
+.DS_Store
+
+# android studio generated files
+bin/
+cocos2d/cocos/platform/android/libcocos2dx/build/
+proj.android-studio/app/assets/
+proj.android-studio/app/build.xml
+proj.android-studio/app/libs/
+proj.android-studio/app/local.properties
+proj.android-studio/app/obj/
+proj.android-studio/app/proguard-project.txt
+
+# android ant generated build files
+cocos2d/cocos/platform/android/java/.d
+cocos2d/cocos/platform/android/java/gen/
+cocos2d/cocos/platform/android/java/local.properties
+proj.android/assets/
+proj.android/gen/
+proj.android/libs/
+proj.android/local.properties
+proj.android/obj/
+
+# ios generated build files
+proj.ios_mac/TestGame.xcodeproj/project.xcworkspace/
+proj.ios_mac/TestGame.xcodeproj/xcuserdata/
+cocos2d/build/cocos2d_libs.xcodeproj/xcuserdata/
