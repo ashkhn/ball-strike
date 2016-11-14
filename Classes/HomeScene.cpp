@@ -1,6 +1,5 @@
 #include "HomeScene.h"
 
-USING_NS_CC;
 
 HomeScreen::HomeScreen(void){}
 HomeScreen::~HomeScreen(void){}
@@ -23,6 +22,13 @@ bool HomeScreen::init(){
 	
 	_screen_size = Director::getInstance()->getVisibleSize();
 
+	auto bg_sprite = Sprite::create("grass.png");
+	auto scale_x = _screen_size.width / bg_sprite->getContentSize().width;
+	auto scale_y = _screen_size.height / bg_sprite->getContentSize().height;
+	bg_sprite->setPosition(Vec2(_screen_size.width * 0.5, _screen_size.height * 0.5));
+	bg_sprite->setScale(scale_x * 1.4, scale_y * 1.2);
+	this->addChild(bg_sprite);
+
 	initMenu();
 	return true;
 }
@@ -34,28 +40,24 @@ void HomeScreen::initMenu(){
 	Menu *menu;
 
 	auto start_label = Label::createWithTTF("Start Game", "fonts/Marker Felt.ttf", MENU_FONT_SIZE);
-	auto score_label = Label::createWithTTF("High Scores", "fonts/Marker Felt.ttf", MENU_FONT_SIZE);
 	auto quit_label = Label::createWithTTF("Quit","fonts/Marker Felt.ttf", MENU_FONT_SIZE);
 	start_game = MenuItemLabel::create(start_label, CC_CALLBACK_1(HomeScreen::startGameCallback, this));
-	high_scores = MenuItemLabel::create(score_label, CC_CALLBACK_1(HomeScreen::scoreCallback, this));
 	quit_game = MenuItemLabel::create(quit_label, CC_CALLBACK_1(HomeScreen::gameQuitCallback, this));
 	
 	if (save_exists){
 		auto resume_label = Label::createWithTTF("Resume game", "fonts/Marker Felt.ttf", MENU_FONT_SIZE);
 		resume_game = MenuItemLabel::create(resume_label, CC_CALLBACK_1(HomeScreen::resumeGameCallback, this));
-		resume_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 4));
-		start_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 3));
-		high_scores->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 2));
-		quit_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 1));
+		resume_game->setPosition(Point(_screen_size.width * 3 / 5, (_screen_size.height / 4) * 3));
+		start_game->setPosition(Point(_screen_size.width * 3 / 5, (_screen_size.height / 4) * 2));
+		quit_game->setPosition(Point(_screen_size.width * 3 / 5, (_screen_size.height / 4) * 1));
 
-		menu = Menu::create(resume_game, start_game, high_scores, quit_game, NULL);
+		menu = Menu::create(resume_game, start_game, quit_game, NULL);
 	}
 	else{
-		start_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 4) * 3));
-		high_scores->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 4) * 2));
-		quit_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 4) * 1));
+		start_game->setPosition(Point(_screen_size.width * 3 / 5, (_screen_size.height / 3) * 2));
+		quit_game->setPosition(Point(_screen_size.width * 3 / 5, (_screen_size.height / 3) * 1));
 
-		menu = Menu::create(start_game, high_scores, quit_game, NULL);
+		menu = Menu::create(start_game, quit_game, NULL);
 	}
 
 	menu->setPosition(Point(0,0));

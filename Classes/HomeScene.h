@@ -15,7 +15,6 @@ class HomeScreen: public Layer{
 		virtual bool init() override;
 		MenuItemLabel* resume_game;
 		MenuItemLabel* start_game;
-		MenuItemLabel* high_scores;
 		MenuItemLabel* quit_game;
 		Size _screen_size;
 		CREATE_FUNC(HomeScreen);
@@ -23,5 +22,4 @@ class HomeScreen: public Layer{
 		void gameQuitCallback(Ref* sender);
 		void startGameCallback(Ref* sender);
 		void resumeGameCallback(Ref* sender);
-		void scoreCallback(Ref* sender);
 };
