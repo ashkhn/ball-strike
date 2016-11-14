@@ -2,7 +2,10 @@
 
 #include "cocos2d.h"
 
+#define MENU_FONT_SIZE 35
+
 USING_NS_CC;
+
 
 class HomeScreen: public Layer{
 	public:

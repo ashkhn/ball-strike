@@ -33,15 +33,15 @@ void HomeScreen::initMenu(){
 
 	Menu *menu;
 
-	auto start_label = Label::createWithTTF("Start Game", "fonts/Marker Felt.ttf",92);
-	auto score_label = Label::createWithTTF("High Scores", "fonts/Marker Felt.ttf",92);
-	auto quit_label = Label::createWithTTF("Quit","fonts/Marker Felt.ttf", 92);
+	auto start_label = Label::createWithTTF("Start Game", "fonts/Marker Felt.ttf", MENU_FONT_SIZE);
+	auto score_label = Label::createWithTTF("High Scores", "fonts/Marker Felt.ttf", MENU_FONT_SIZE);
+	auto quit_label = Label::createWithTTF("Quit","fonts/Marker Felt.ttf", MENU_FONT_SIZE);
 	start_game = MenuItemLabel::create(start_label, CC_CALLBACK_1(HomeScreen::startGameCallback, this));
 	high_scores = MenuItemLabel::create(score_label, CC_CALLBACK_1(HomeScreen::scoreCallback, this));
 	quit_game = MenuItemLabel::create(quit_label, CC_CALLBACK_1(HomeScreen::gameQuitCallback, this));
 	
 	if (save_exists){
-		auto resume_label = Label::createWithTTF("Resume game", "fonts/Marker Felt.ttf", 92);
+		auto resume_label = Label::createWithTTF("Resume game", "fonts/Marker Felt.ttf", MENU_FONT_SIZE);
 		resume_game = MenuItemLabel::create(resume_label, CC_CALLBACK_1(HomeScreen::resumeGameCallback, this));
 		resume_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 4));
 		start_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 3));
