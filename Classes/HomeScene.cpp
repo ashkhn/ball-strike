@@ -1,4 +1,5 @@
 #include "HomeScene.h"
+#include "GameScene.h"
 
 
 HomeScreen::HomeScreen(void){}
@@ -67,15 +68,13 @@ void HomeScreen::initMenu(){
 }
 
 void HomeScreen::startGameCallback(Ref* sender){
+	Director::getInstance()->replaceScene(TransitionFade::create(1, Game::createScene()));
 }
 
 void HomeScreen::resumeGameCallback(Ref* sender){
 	UserDefault::getInstance()->setBoolForKey("is_resumed", true);
 }
 
-void HomeScreen::scoreCallback(Ref* sender){
-
-}
 
 void HomeScreen::gameQuitCallback(Ref* sender){
 	Director::getInstance()->end();
