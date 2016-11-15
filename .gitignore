@@ -21,6 +21,6 @@ proj.android/local.properties
 proj.android/obj/
 
 # ios generated build files
-proj.ios_mac/TestGame.xcodeproj/project.xcworkspace/
-proj.ios_mac/TestGame.xcodeproj/xcuserdata/
+proj.ios_mac/BallStrike.xcodeproj/project.xcworkspace/
+proj.ios_mac/BallStrike.xcodeproj/xcuserdata/
 cocos2d/build/cocos2d_libs.xcodeproj/xcuserdata/

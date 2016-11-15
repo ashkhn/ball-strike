@@ -48,6 +48,6 @@ Vector<SpriteFrame*> BallSprite::setupAnimation(const char* format){
 // @return the 'radius' of the sprite
 float BallSprite::radius(){
     //  getContentSize returns the size of the spritesheet used. Hence the factor 
-    //  has been modified to return sprite radius
-	return getTexture()->getContentSize().height * 0.25f;
+    // and since each ball has the same dimensions
+	return (float) 297 / 2;
 }
