@@ -13,6 +13,9 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		294D0D641D0D56D500F7F5D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294D0D631D0D56D500F7F5D4 /* CoreText.framework */; };
+		383EC78F1DDAE1A800B5586D /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC7891DDAE1A800B5586D /* Enemy.cpp */; };
+		383EC7901DDAE1A800B5586D /* EnemySprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC78B1DDAE1A800B5586D /* EnemySprite.cpp */; };
+		383EC7911DDAE1A800B5586D /* GameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC78D1DDAE1A800B5586D /* GameLevel.cpp */; };
 		38A8AA931DD989F900044F45 /* HomeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A8AA911DD989F900044F45 /* HomeScene.cpp */; };
 		38A8AAA21DD98CE200044F45 /* ball_sprites.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AA971DD98CE200044F45 /* ball_sprites.png */; };
 		38A8AAA31DD98CE200044F45 /* blue_ball_001.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AA981DD98CE200044F45 /* blue_ball_001.png */; };
@@ -128,6 +131,12 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		294D0D631D0D56D500F7F5D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
+		383EC7891DDAE1A800B5586D /* Enemy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Enemy.cpp; sourceTree = "<group>"; };
+		383EC78A1DDAE1A800B5586D /* Enemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enemy.h; sourceTree = "<group>"; };
+		383EC78B1DDAE1A800B5586D /* EnemySprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemySprite.cpp; sourceTree = "<group>"; };
+		383EC78C1DDAE1A800B5586D /* EnemySprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemySprite.h; sourceTree = "<group>"; };
+		383EC78D1DDAE1A800B5586D /* GameLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameLevel.cpp; sourceTree = "<group>"; };
+		383EC78E1DDAE1A800B5586D /* GameLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLevel.h; sourceTree = "<group>"; };
 		38A8AA911DD989F900044F45 /* HomeScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HomeScene.cpp; sourceTree = "<group>"; usesTabs = 1; };
 		38A8AA921DD989F900044F45 /* HomeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeScene.h; sourceTree = "<group>"; };
 		38A8AA971DD98CE200044F45 /* ball_sprites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball_sprites.png; sourceTree = "<group>"; };
@@ -348,6 +357,12 @@
 			isa = PBXGroup;
 			children = (
 				38A8AAAF1DD9BFA600044F45 /* BallSprite.cpp */,
+				383EC7891DDAE1A800B5586D /* Enemy.cpp */,
+				383EC78A1DDAE1A800B5586D /* Enemy.h */,
+				383EC78B1DDAE1A800B5586D /* EnemySprite.cpp */,
+				383EC78C1DDAE1A800B5586D /* EnemySprite.h */,
+				383EC78D1DDAE1A800B5586D /* GameLevel.cpp */,
+				383EC78E1DDAE1A800B5586D /* GameLevel.h */,
 				38A8AAB01DD9BFA700044F45 /* BallSprite.h */,
 				38A8AAB11DD9BFA700044F45 /* GameScene.cpp */,
 				38A8AAB21DD9BFA700044F45 /* GameScene.h */,
@@ -564,7 +579,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				383EC7911DDAE1A800B5586D /* GameLevel.cpp in Sources */,
+				383EC78F1DDAE1A800B5586D /* Enemy.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				383EC7901DDAE1A800B5586D /* EnemySprite.cpp in Sources */,
 				38A8AAB31DD9BFA700044F45 /* BallSprite.cpp in Sources */,
 				38A8AA931DD989F900044F45 /* HomeScene.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
