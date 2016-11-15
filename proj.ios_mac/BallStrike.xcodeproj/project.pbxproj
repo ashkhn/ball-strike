@@ -16,6 +16,7 @@
 		383EC78F1DDAE1A800B5586D /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC7891DDAE1A800B5586D /* Enemy.cpp */; };
 		383EC7901DDAE1A800B5586D /* EnemySprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC78B1DDAE1A800B5586D /* EnemySprite.cpp */; };
 		383EC7911DDAE1A800B5586D /* GameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC78D1DDAE1A800B5586D /* GameLevel.cpp */; };
+		383EC7961DDAF49A00B5586D /* ball_sprites.png in Resources */ = {isa = PBXBuildFile; fileRef = 383EC7941DDAF49A00B5586D /* ball_sprites.png */; };
 		38A8AA931DD989F900044F45 /* HomeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A8AA911DD989F900044F45 /* HomeScene.cpp */; };
 		38A8AAA21DD98CE200044F45 /* ball_sprites.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AA971DD98CE200044F45 /* ball_sprites.png */; };
 		38A8AAA31DD98CE200044F45 /* blue_ball_001.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AA981DD98CE200044F45 /* blue_ball_001.png */; };
@@ -137,6 +138,7 @@
 		383EC78C1DDAE1A800B5586D /* EnemySprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemySprite.h; sourceTree = "<group>"; };
 		383EC78D1DDAE1A800B5586D /* GameLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameLevel.cpp; sourceTree = "<group>"; };
 		383EC78E1DDAE1A800B5586D /* GameLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLevel.h; sourceTree = "<group>"; };
+		383EC7941DDAF49A00B5586D /* ball_sprites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball_sprites.png; sourceTree = "<group>"; };
 		38A8AA911DD989F900044F45 /* HomeScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HomeScene.cpp; sourceTree = "<group>"; usesTabs = 1; };
 		38A8AA921DD989F900044F45 /* HomeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeScene.h; sourceTree = "<group>"; };
 		38A8AA971DD98CE200044F45 /* ball_sprites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball_sprites.png; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				383EC7941DDAF49A00B5586D /* ball_sprites.png */,
 				38A8AAB51DD9BFFB00044F45 /* ball_sprites.plist */,
 				38A8AAB61DD9BFFB00044F45 /* goku.png */,
 				38A8AAB71DD9BFFB00044F45 /* vegeta.png */,
@@ -535,6 +538,7 @@
 				38A8AAB91DD9BFFB00044F45 /* goku.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
+				383EC7961DDAF49A00B5586D /* ball_sprites.png in Resources */,
 				38A8AAA71DD98CE200044F45 /* orange_ball_001.png in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,

@@ -3,8 +3,10 @@
 #include "BallSprite.h"
 #include "EnemySprite.h"
 
-
+#define NUM_BALLS_PER_LEVEL 5
+#define NUM_ENEMIES_PER_LEVEL 2
 USING_NS_CC;
+
 
 class GameLevel {
 	public:
@@ -12,5 +14,5 @@ class GameLevel {
 		virtual ~GameLevel();
 		std::vector<BallSprite*> attack_balls;
 		std::vector<EnemySprite*> enemies;
-		void initLevel(int num_balls, int num_enemies);
+		void initLevel();
 };
