@@ -31,7 +31,7 @@ bool Game::init(){
 	
 	//Initialize rand generator and display variables
 	std::srand(time(NULL));
-	_screen_size = Director::getInstance()->getVisibleSize();
+	_screen_size = Director::getInstance()->getWinSizeInPixels();
 	
 	// Load the sprite frame cache
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("ball_sprites.plist");
@@ -41,7 +41,7 @@ bool Game::init(){
 	auto scale_x = _screen_size.width / bg_sprite->getContentSize().width;
 	auto scale_y = _screen_size.height / bg_sprite->getContentSize().height;
 	bg_sprite->setPosition(Vec2(_screen_size.width / 2 , _screen_size.height / 2));
-	bg_sprite->setScale(scale_x * 1.4, scale_y * 1.2);
+	bg_sprite->setScale(scale_x, scale_y);
 	this->addChild(bg_sprite);
 
 
@@ -54,10 +54,10 @@ void Game::generateLevel(bool is_resumed){
 
 	for (int i = 0; i < NUM_BALLS_PER_LEVEL; i++){
 		BallSprite* sprite = BallSprite::generateRandomSprite();
-		
+		sprite->id = i;	
 		//TODO change this 
-		_min_x = sprite->radius(); 
-		_min_y = sprite->radius();
+		_min_x = sprite->radius() ; 
+		_min_y = sprite->radius() ;
 		_max_x = _screen_size.width  - sprite->radius();
 		_max_y = _screen_size.height - sprite->radius();
 

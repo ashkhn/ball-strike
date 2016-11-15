@@ -15,7 +15,6 @@ BallSprite* BallSprite::gameSpriteWithFile(std::string filename){
 	auto animation = Animation::createWithSpriteFrames(frames, 1.0f/4); // 4 frames per second
 	if (sprite && sprite->initWithSpriteFrame(frames.front())){
 		sprite->autorelease();
-		sprite->runAction(RepeatForever::create(Animate::create(animation)));
 		return sprite;
 	}
 	CC_SAFE_DELETE(sprite);
@@ -48,6 +47,7 @@ Vector<SpriteFrame*> BallSprite::setupAnimation(const char* format){
 // Calculates the radius to help calculate the positioning of the sprite
 // @return the 'radius' of the sprite
 float BallSprite::radius(){
-    // Scaling has been modified for current sprite sizes.
-	return getTexture()->getContentSize().width;
+    //  getContentSize returns the size of the spritesheet used. Hence the factor 
+    //  has been modified to return sprite radius
+	return getTexture()->getContentSize().height * 0.25f;
 }

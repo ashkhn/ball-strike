@@ -8,6 +8,9 @@
             <PersistentString
                value = "std::rand()">
             </PersistentString>
+            <PersistentString
+               value = "Director::getInstance()-&gt;getContentScaleFactor">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
    </ContextStates>
