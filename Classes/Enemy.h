@@ -7,12 +7,10 @@ USING_NS_CC;
 
 class Enemy {
 	public:
-		Enemy();
+		Enemy(int max_hits);
 		virtual ~Enemy();
-		int max_health;
-		int curr_health;
-		EnemySprite sprite;
-		ui::LoadingBar health;
-		Label health_label;
-		void addNewEnemy(Vec2 position);
+		EnemySprite* sprite;
+		Label* hits_left;
+		int max_hits;
+		int current_hits;
 };

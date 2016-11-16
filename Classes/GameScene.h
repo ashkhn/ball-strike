@@ -9,13 +9,14 @@ class Game : public Layer{
 	public:
 		Game();
 		virtual ~Game();
-		float _max_x;
-		float _max_y;
-		float _min_x;
-		float _min_y;	
 		static Scene* createScene();
 		virtual bool init() override;
 		Size _screen_size;
+		GameLevel* game_level;
 		CREATE_FUNC(Game);
+		virtual void update(float dt) override;
 		void generateLevel(bool is_resumed);
+		virtual bool onTouchBegan(Touch* touch, Event* event) override;
+		virtual void onTouchMoved(Touch* touch, Event* event) override;
+		virtual void onTouchEnded(Touch* touch, Event* event) override;
 };

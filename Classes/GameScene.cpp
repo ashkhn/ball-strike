@@ -1,5 +1,5 @@
 #include "GameScene.h"
-#include "BallSprite.h"
+#include "GameLevel.h"
 USING_NS_CC;
 
 
@@ -44,27 +44,54 @@ bool Game::init(){
 	bg_sprite->setScale(scale_x, scale_y);
 	this->addChild(bg_sprite);
 
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = CC_CALLBACK_2(Game::onTouchBegan, this);
+	listener->onTouchMoved = CC_CALLBACK_2(Game::onTouchMoved, this);
+	listener->onTouchEnded = CC_CALLBACK_2(Game::onTouchEnded, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
 
 	generateLevel(is_resumed);
+	this->scheduleUpdate();
 
 	return true;
 }
 
 void Game::generateLevel(bool is_resumed){
 
-	for (int i = 0; i < NUM_BALLS_PER_LEVEL; i++){
-		BallSprite* sprite = BallSprite::generateRandomSprite();
-		sprite->id = i;	
-		//TODO change this 
-		_min_x = sprite->radius() ; 
-		_min_y = sprite->radius() ;
-		_max_x = _screen_size.width  - sprite->radius();
-		_max_y = _screen_size.height - sprite->radius();
-
-		float rand_x = _min_x + _max_x * ( (float) std::rand() / RAND_MAX );
-		float rand_y = _min_y + _max_y * ( (float) std::rand() / RAND_MAX );
-		sprite->setPosition(Vec2(rand_x, rand_y));
-		this->addChild(sprite);
+	game_level = new GameLevel(_screen_size);
+	game_level->initLevel();
+	
+	for(auto ball: game_level->attack_balls){
+		this->addChild(ball);
 	}
+
+	for (auto enemy: game_level->enemies){
+		this->addChild(enemy->sprite);
+		this->addChild(enemy->hits_left);
+	}
+}
+
+
+bool Game::onTouchBegan(Touch* touch, Event* event){
+	if(touch != nullptr){
+
+	}
+
+	return false;
+}
+
+void Game::onTouchMoved(Touch* touch, Event* event){
+	//TODO add the arrow and scale it on the basis of the length of
+	//the moved vector
+}
+
+void Game::onTouchEnded(Touch* touch, Event* event){
+	//TODO calculate the velocity vector and move the ball 
+}
+
+void Game::update(float dt){
+//	log("Update called within time %f", dt);
 }
 

@@ -35,6 +35,7 @@
 		38A8AAB81DD9BFFB00044F45 /* ball_sprites.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AAB51DD9BFFB00044F45 /* ball_sprites.plist */; };
 		38A8AAB91DD9BFFB00044F45 /* goku.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AAB61DD9BFFB00044F45 /* goku.png */; };
 		38A8AABA1DD9BFFB00044F45 /* vegeta.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AAB71DD9BFFB00044F45 /* vegeta.png */; };
+		38A9C44F1DDC0AA900E1E479 /* red_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A9C44E1DDC0AA900E1E479 /* red_arrow.png */; };
 		3EACC98F19EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		3EACC99019EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
@@ -160,6 +161,7 @@
 		38A8AAB51DD9BFFB00044F45 /* ball_sprites.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ball_sprites.plist; sourceTree = "<group>"; };
 		38A8AAB61DD9BFFB00044F45 /* goku.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goku.png; sourceTree = "<group>"; };
 		38A8AAB71DD9BFFB00044F45 /* vegeta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vegeta.png; sourceTree = "<group>"; };
+		38A9C44E1DDC0AA900E1E479 /* red_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_arrow.png; sourceTree = "<group>"; };
 		3EACC98E19EE6D4300EB3C5E /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				38A9C44E1DDC0AA900E1E479 /* red_arrow.png */,
 				383EC7941DDAF49A00B5586D /* ball_sprites.png */,
 				38A8AAB51DD9BFFB00044F45 /* ball_sprites.plist */,
 				38A8AAB61DD9BFFB00044F45 /* goku.png */,
@@ -545,6 +548,7 @@
 				38A8AAA21DD98CE200044F45 /* ball_sprites.png in Resources */,
 				38A8AAAA1DD98CE200044F45 /* purple_ball_002.png in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
+				38A9C44F1DDC0AA900E1E479 /* red_arrow.png in Resources */,
 				38A8AAA41DD98CE200044F45 /* blue_ball_002.png in Resources */,
 				38A8AAB81DD9BFFB00044F45 /* ball_sprites.plist in Resources */,
 				38A8AAAC1DD98CE200044F45 /* red_ball_002.png in Resources */,
