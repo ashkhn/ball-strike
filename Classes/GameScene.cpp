@@ -118,9 +118,58 @@ void Game::onTouchEnded(Touch* touch, Event* event){
 	//TODO calculate the velocity vector and move the ball
     log("touch end called");
     game_level->arrow->runAction(RemoveSelf::create());
+	if (touch != nullptr){
+		auto tap = touch->getLocation();
+		for (auto ball: game_level->attack_balls){
+			if (ball->getTouch() != nullptr && ball->getTouch() == touch){
+				auto diff_x = tap.x - touch->getStartLocation().x;
+				auto diff_y = tap.y - touch->getStartLocation().y;
+				ball->setVelocity(Vec2(diff_x, diff_y));
+			}
+		}
+	}
 }
 
 void Game::update(float dt){
 //	log("Update called within time %f", dt);
+
+	for (auto ball : game_level->attack_balls){
+		if (ball->getTouch() != nullptr && ball->getVelocity() != Vec2(0,0)){
+			auto ball_velocity = ball->getVelocity();
+			auto step_x = ball_velocity.x * dt;
+			auto step_y = ball_velocity.y * dt;
+			auto ball_next_posn = ball->getNextPosition();
+			ball_next_posn.x += step_x;
+			ball_next_posn.y += step_y;
+
+			//Check for collision with the walls;
+			
+			//Left side
+			if (ball_next_posn.x < ball->radius()){
+				ball_next_posn.x = ball->radius();
+				ball_velocity.x *= -RESTITUTION_COEFF;  // Perfect collision so no loss in velocity
+			}
+			//Right side
+			if (ball_next_posn.x > _screen_size.width - ball->radius()){
+				ball_next_posn.x = _screen_size.width - ball->radius();
+				ball_velocity.x *= -RESTITUTION_COEFF;
+			}
+			//Top side
+			if (ball_next_posn.y > _screen_size.height - ball->radius()){
+				ball_next_posn.y = _screen_size.height - ball->radius();
+				ball_velocity.y *= -RESTITUTION_COEFF;
+			}
+			// Bottom side
+			if (ball_next_posn.y < ball->radius()){
+				ball_next_posn.y = ball->radius();
+				ball_velocity.y *= -RESTITUTION_COEFF;
+			}
+
+			//Update info
+			ball->setVelocity(ball_velocity);
+			ball->setNextPosition(ball_next_posn);
+			ball->setPosition(ball->getNextPosition());
+		}
+	}
 }
 
