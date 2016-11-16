@@ -14,6 +14,7 @@ class GameLevel {
 		virtual ~GameLevel();
 		std::vector<BallSprite*> attack_balls;
 		std::vector<Enemy*> enemies;
+		Sprite* arrow;
 		void initLevel();
 		Size _screen_size;
 };

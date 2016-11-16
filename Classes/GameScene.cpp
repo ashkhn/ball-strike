@@ -63,6 +63,7 @@ void Game::generateLevel(bool is_resumed){
 	game_level = new GameLevel(_screen_size);
 	game_level->initLevel();
 	
+
 	for(auto ball: game_level->attack_balls){
 		this->addChild(ball);
 	}
@@ -76,7 +77,17 @@ void Game::generateLevel(bool is_resumed){
 
 bool Game::onTouchBegan(Touch* touch, Event* event){
 	if(touch != nullptr){
-
+		auto tap = touch->getLocation();
+		for (auto ball : game_level->attack_balls){
+			if (ball->getBoundingBox().containsPoint(tap)){
+				ball->setTouch(touch);
+                game_level->arrow = Sprite::create("red_arrow.png");
+                game_level->arrow->setScale(0.5);
+				game_level->arrow->setPosition(ball->getPosition());
+				this->addChild(game_level->arrow);
+				return true;
+			}
+		}
 	}
 
 	return false;
@@ -85,10 +96,28 @@ bool Game::onTouchBegan(Touch* touch, Event* event){
 void Game::onTouchMoved(Touch* touch, Event* event){
 	//TODO add the arrow and scale it on the basis of the length of
 	//the moved vector
+	if(touch != nullptr){
+		auto tap = touch->getLocation();
+		for (auto ball : game_level->attack_balls){
+			if (ball->getTouch() != nullptr && ball->getTouch() == touch) {
+				log("Location of touch moved is (%f, %f)", tap.x, tap.y);
+				auto diff_x = tap.x - touch->getStartLocation().x;
+				auto diff_y = tap.y - touch->getStartLocation().y;
+				auto sq_dist = std::pow(diff_x, 2) + std::pow(diff_y, 2);
+				auto orig_length = game_level->arrow->getTexture()->getContentSize().width;
+				auto scale = sq_dist / std::pow(orig_length, 2);
+				game_level->arrow->setScaleX(scale);
+                auto angle = std::atan2(diff_y, diff_x);
+                game_level->arrow->setRotation(CC_RADIANS_TO_DEGREES(-1 * angle));
+			}
+		}
+	}
 }
 
 void Game::onTouchEnded(Touch* touch, Event* event){
-	//TODO calculate the velocity vector and move the ball 
+	//TODO calculate the velocity vector and move the ball
+    log("touch end called");
+    game_level->arrow->runAction(RemoveSelf::create());
 }
 
 void Game::update(float dt){

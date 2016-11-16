@@ -12,6 +12,7 @@ void GameLevel::initLevel(){
 	enemies.clear();
 	float min_x, min_y, max_x, max_y;
 
+
 	for (int i = 0; i < NUM_BALLS_PER_LEVEL; i++){
 		BallSprite* new_ball = BallSprite::generateRandomSprite();
 		new_ball->id = i + 1;
