@@ -124,7 +124,7 @@ void Game::onTouchEnded(Touch* touch, Event* event){
 			if (ball->getTouch() != nullptr && ball->getTouch() == touch){
 				auto diff_x = tap.x - touch->getStartLocation().x;
 				auto diff_y = tap.y - touch->getStartLocation().y;
-				ball->setVelocity(Vec2(diff_x, diff_y));
+				ball->setVelocity(Vec2(VELOCITY_SCALE_FACTOR * diff_x, VELOCITY_SCALE_FACTOR * diff_y));
 			}
 		}
 	}
@@ -164,7 +164,7 @@ void Game::update(float dt){
 				ball_next_posn.y = ball->radius();
 				ball_velocity.y *= -RESTITUTION_COEFF;
 			}
-
+			ball_velocity *= BALL_DECELERATION;
 			//Update info
 			ball->setVelocity(ball_velocity);
 			ball->setNextPosition(ball_next_posn);
