@@ -2,7 +2,7 @@
 
 #include "cocos2d.h"
 
-#define MENU_FONT_SIZE 35
+#define MENU_FONT_SIZE 92
 
 USING_NS_CC;
 
