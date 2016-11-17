@@ -76,13 +76,14 @@ void Game::generateLevel(bool is_resumed){
 
 
 bool Game::onTouchBegan(Touch* touch, Event* event){
-	if(touch != nullptr){
+	if(touch != nullptr && !game_level->is_busy){
 		auto tap = touch->getLocation();
 		for (auto ball : game_level->attack_balls){
 			if (ball->getBoundingBox().containsPoint(tap)){
 				ball->setTouch(touch);
-                game_level->arrow = Sprite::create("red_arrow.png");
-                game_level->arrow->setScale(0.5);
+				game_level->is_busy = true;
+				game_level->arrow = Sprite::create("red_arrow.png");
+				game_level->arrow->setScale(0.5);
 				game_level->arrow->setPosition(ball->getPosition());
 				this->addChild(game_level->arrow);
 				return true;
@@ -116,8 +117,8 @@ void Game::onTouchMoved(Touch* touch, Event* event){
 
 void Game::onTouchEnded(Touch* touch, Event* event){
 	//TODO calculate the velocity vector and move the ball
-    log("touch end called");
-    game_level->arrow->runAction(RemoveSelf::create());
+	log("touch end called");
+	game_level->arrow->runAction(RemoveSelf::create());
 	if (touch != nullptr){
 		auto tap = touch->getLocation();
 		for (auto ball: game_level->attack_balls){
@@ -131,10 +132,8 @@ void Game::onTouchEnded(Touch* touch, Event* event){
 }
 
 void Game::update(float dt){
-//	log("Update called within time %f", dt);
-
 	for (auto ball : game_level->attack_balls){
-		if (ball->getTouch() != nullptr && ball->getVelocity() != Vec2(0,0)){
+		if (ball->getVelocity() != Vec2(0,0)){
 			auto ball_velocity = ball->getVelocity();
 			auto step_x = ball_velocity.x * dt;
 			auto step_y = ball_velocity.y * dt;
@@ -164,12 +163,55 @@ void Game::update(float dt){
 				ball_next_posn.y = ball->radius();
 				ball_velocity.y *= -RESTITUTION_COEFF;
 			}
+			//check for collision with other balls;
+			for (auto other_ball : game_level->attack_balls){
+				if (other_ball-> id != ball->id){
+					auto dist_vec = other_ball->getPosition() - ball->getPosition();
+					auto future_dist_vec = other_ball->getNextPosition() - ball_next_posn;
+					auto sum_radii = std::pow(2 * ball->radius(), 2);
+					if (dist_vec.lengthSquared() <= sum_radii || future_dist_vec.lengthSquared() <= sum_radii){
+						log("Collision about to happen");
+						auto collision_axis = other_ball->getPosition() - ball->getPosition();
+						float ball_vel_mag = ball_velocity.length();
+						float other_vel_mag = other_ball->getVelocity().length();
+						
+						//Calculate angles
+						float alpha = getAngle(ball_velocity, collision_axis);
+						float beta = getAngle(other_ball->getVelocity(), collision_axis);
+						float phi = getAngle(collision_axis, Vec2(0,0));
+						float v_axis = ( ball_vel_mag * std::cos(alpha) + other_vel_mag * std::cos(beta)) / 2;
+						ball_velocity.x = other_vel_mag * std::cos(beta) * std::cos(phi) - ball_vel_mag * std::sin(alpha) * std::sin(phi);
+						ball_velocity.y = other_vel_mag * std::cos(beta) * std::sin(phi) + ball_vel_mag * std::sin(alpha) * std::cos(phi);
+
+						auto other_vel_x = ball_vel_mag * std::cos(alpha) * std::cos(phi) - other_vel_mag * std::sin(beta) * std::sin(phi);
+						auto other_vel_y = ball_vel_mag * std::cos(alpha) * std::sin(phi) + other_vel_mag * std::sin(beta) * std::cos(phi);
+						other_ball->setVelocity(Vec2(other_vel_x, other_vel_y));
+						auto other_step_x = other_ball->getVelocity().x;
+						auto other_step_y = other_ball->getVelocity().y;
+						auto norm_axis = collision_axis.getNormalized();
+						ball_next_posn -= 0.5f * ball->radius() * norm_axis;
+					}
+				}
+			}
+			
 			ball_velocity *= BALL_DECELERATION;
 			//Update info
+			if (ball_velocity.lengthSquared() < 10){
+				ball_velocity = Vec2(0, 0);
+				ball->setTouch(nullptr);
+				game_level->is_busy = false;
+			}
 			ball->setVelocity(ball_velocity);
 			ball->setNextPosition(ball_next_posn);
 			ball->setPosition(ball->getNextPosition());
 		}
+			
 	}
 }
 
+
+float Game::getAngle(Vec2 a, Vec2 b){
+	float num = b.x * a.y - b.y * a.x;
+	float den = a.x * b.x + b.y * a.y;
+	return std::atan2(den, num);
+}

@@ -3,7 +3,7 @@
 #include "BallSprite.h"
 #include "Enemy.h"
 
-#define NUM_BALLS_PER_LEVEL 1
+#define NUM_BALLS_PER_LEVEL 2
 #define NUM_ENEMIES_PER_LEVEL 0
 #define RESTITUTION_COEFF 0.8f
 #define VELOCITY_SCALE_FACTOR 8.0f
@@ -21,4 +21,5 @@ class GameLevel {
 		Sprite* arrow;
 		void initLevel();
 		Size _screen_size;
+		bool is_busy;
 };
