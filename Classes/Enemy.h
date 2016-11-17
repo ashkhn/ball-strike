@@ -13,4 +13,5 @@ class Enemy {
 		Label* hits_left;
 		int max_hits;
 		int current_hits;
+		void getHit();
 };

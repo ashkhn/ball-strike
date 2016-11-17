@@ -15,6 +15,7 @@ class EnemySprite : public Sprite{
 		static EnemySprite* gameSpriteWithFile(std::string file_name);
 		float width();
 		float height();
+		float radius();
 		EnemyClass enemy_class;
 		const static std::string sprite_paths[];
 		const static std::vector<Size> sprite_sizes;

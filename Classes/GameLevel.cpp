@@ -38,7 +38,7 @@ void GameLevel::initLevel(){
 	}
 
 	for (int  i = 0; i < NUM_ENEMIES_PER_LEVEL; i++){
-		auto enemy = new Enemy(4);
+		auto enemy = new Enemy(20);
 		min_x = enemy->sprite->width();
 		min_y = enemy->sprite->height();
 		max_x = _screen_size.width - min_x;
