@@ -179,10 +179,8 @@ void Game::update(float dt){
 						float alpha = getAngle(ball_velocity, collision_axis);
 						float beta = getAngle(other_ball->getVelocity(), collision_axis);
 						float phi = getAngle(collision_axis, Vec2(0,0));
-						float v_axis = ( ball_vel_mag * std::cos(alpha) + other_vel_mag * std::cos(beta)) / 2;
 						ball_velocity.x = other_vel_mag * std::cos(beta) * std::cos(phi) - ball_vel_mag * std::sin(alpha) * std::sin(phi);
 						ball_velocity.y = other_vel_mag * std::cos(beta) * std::sin(phi) + ball_vel_mag * std::sin(alpha) * std::cos(phi);
-
 						auto other_vel_x = ball_vel_mag * std::cos(alpha) * std::cos(phi) - other_vel_mag * std::sin(beta) * std::sin(phi);
 						auto other_vel_y = ball_vel_mag * std::cos(alpha) * std::sin(phi) + other_vel_mag * std::sin(beta) * std::cos(phi);
 						other_ball->setVelocity(Vec2(other_vel_x, other_vel_y));
@@ -193,7 +191,34 @@ void Game::update(float dt){
 					}
 				}
 			}
-			
+
+			//check for colllisions with enemy
+			for (auto enemy : game_level->enemies){
+				auto dist_vec = enemy->sprite->getPosition() - ball->getPosition();
+				auto future_dist_vec = enemy->sprite->getPosition() - ball_next_posn;
+				auto sum_radii = std::pow(ball->radius() + enemy->sprite->radius(), 2);
+				if(dist_vec.lengthSquared() <= sum_radii || future_dist_vec.lengthSquared() <= sum_radii){
+					if(enemy->current_hits < enemy->max_hits){
+						enemy->getHit();
+						log("Enemy collision about to happen");
+						auto collision_axis = dist_vec;
+						float ball_vel_mag = ball_velocity.length();
+						float alpha = getAngle(ball_velocity, collision_axis);
+						float phi = getAngle(collision_axis, Vec2(0,0));
+						ball_velocity.x = -1.0 * ball_vel_mag * std::cos(alpha) * std::cos(phi) - ball_vel_mag * std::sin(alpha) * std::sin(phi);
+						ball_velocity.y = -1.0 * ball_vel_mag * std::cos(alpha) * std::sin(phi) + ball_vel_mag * std::sin(alpha) * std::cos(phi);
+						auto norm_axis = collision_axis.getNormalized();
+						ball_next_posn -= 0.5f * ball->radius() * norm_axis;
+					}
+					else{
+						auto enemy_posn = std::find(game_level->enemies.begin(), game_level->enemies.end(), enemy);
+						game_level->enemies.erase(enemy_posn);
+						enemy->sprite->runAction(RemoveSelf::create());
+						enemy->hits_left->runAction(RemoveSelf::create());
+					}
+				}
+			}
+
 			ball_velocity *= BALL_DECELERATION;
 			//Update info
 			if (ball_velocity.lengthSquared() < 10){

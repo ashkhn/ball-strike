@@ -33,6 +33,13 @@ float EnemySprite::height(){
 	return getTexture()->getContentSize().height * 0.5;
 }
 
+float EnemySprite::radius(){
+	float height = EnemySprite::height();
+	float width = EnemySprite::width();
+	auto rad_sq = std::pow(height, 2) + std::pow(width, 2);
+	return std::pow(rad_sq , 0.5);
+}
+
 Vec2 EnemySprite::getTextPosition(){
 	auto sprite_posn = getPosition();
 	auto x_cord = sprite_posn.x;
