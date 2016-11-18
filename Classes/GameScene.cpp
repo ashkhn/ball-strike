@@ -95,8 +95,6 @@ bool Game::onTouchBegan(Touch* touch, Event* event){
 }
 
 void Game::onTouchMoved(Touch* touch, Event* event){
-	//TODO add the arrow and scale it on the basis of the length of
-	//the moved vector
 	if(touch != nullptr){
 		auto tap = touch->getLocation();
 		for (auto ball : game_level->attack_balls){
@@ -108,8 +106,8 @@ void Game::onTouchMoved(Touch* touch, Event* event){
 				auto orig_length = game_level->arrow->getTexture()->getContentSize().width;
 				auto scale = sq_dist / std::pow(orig_length, 2);
 				game_level->arrow->setScaleX(scale);
-                auto angle = std::atan2(diff_y, diff_x);
-                game_level->arrow->setRotation(CC_RADIANS_TO_DEGREES(-1 * angle));
+                auto angle = std::atan2(-diff_y, diff_x);
+                game_level->arrow->setRotation(CC_RADIANS_TO_DEGREES(angle) - 180);
 			}
 		}
 	}
@@ -123,8 +121,8 @@ void Game::onTouchEnded(Touch* touch, Event* event){
 		auto tap = touch->getLocation();
 		for (auto ball: game_level->attack_balls){
 			if (ball->getTouch() != nullptr && ball->getTouch() == touch){
-				auto diff_x = tap.x - touch->getStartLocation().x;
-				auto diff_y = tap.y - touch->getStartLocation().y;
+				auto diff_x = touch->getStartLocation().x - tap.x;
+				auto diff_y = touch->getStartLocation().y - tap.y;
 				ball->setVelocity(Vec2(VELOCITY_SCALE_FACTOR * diff_x, VELOCITY_SCALE_FACTOR * diff_y));
 			}
 		}
@@ -208,7 +206,7 @@ void Game::update(float dt){
 						ball_velocity.x = -1.0 * ball_vel_mag * std::cos(alpha) * std::cos(phi) - ball_vel_mag * std::sin(alpha) * std::sin(phi);
 						ball_velocity.y = -1.0 * ball_vel_mag * std::cos(alpha) * std::sin(phi) + ball_vel_mag * std::sin(alpha) * std::cos(phi);
 						auto norm_axis = collision_axis.getNormalized();
-						ball_next_posn -= 0.5f * ball->radius() * norm_axis;
+						ball_next_posn -= 30 * norm_axis;
 					}
 					else{
 						auto enemy_posn = std::find(game_level->enemies.begin(), game_level->enemies.end(), enemy);
