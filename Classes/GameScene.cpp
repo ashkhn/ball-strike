@@ -41,7 +41,7 @@ bool Game::init(){
 	auto scale_x = _screen_size.width / bg_sprite->getContentSize().width;
 	auto scale_y = _screen_size.height / bg_sprite->getContentSize().height;
 	bg_sprite->setPosition(Vec2(_screen_size.width / 2 , _screen_size.height / 2));
-	bg_sprite->setScale(scale_x, scale_y);
+	bg_sprite->setScale(scale_x, scale_y * 1.2);
 	this->addChild(bg_sprite);
 
 	auto listener = EventListenerTouchOneByOne::create();
@@ -62,7 +62,13 @@ void Game::generateLevel(bool is_resumed){
 
 	game_level = new GameLevel(_screen_size);
 	game_level->initLevel();
-	
+
+	auto adv_sprite = Sprite::create("type_advantage.png");
+	adv_sprite->setScale(2);
+	auto sprite_h = adv_sprite->getBoundingBox().size.height / 2;
+	auto sprite_w = adv_sprite->getBoundingBox().size.width / 2;
+	adv_sprite->setPosition(Vec2(_screen_size.width - sprite_w, _screen_size.height - sprite_h ));
+	this->addChild(adv_sprite);
 
 	for(auto ball: game_level->attack_balls){
 		this->addChild(ball);
