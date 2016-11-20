@@ -16,10 +16,12 @@ class HomeScreen: public Layer{
 		MenuItemLabel* resume_game;
 		MenuItemLabel* start_game;
 		MenuItemLabel* quit_game;
+		MenuItemLabel* settings;
 		Size _screen_size;
 		CREATE_FUNC(HomeScreen);
 		void initMenu();
 		void gameQuitCallback(Ref* sender);
 		void startGameCallback(Ref* sender);
 		void resumeGameCallback(Ref* sender);
+		void settingsCallback(Ref* sender);
 };
