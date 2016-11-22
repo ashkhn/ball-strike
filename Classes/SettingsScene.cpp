@@ -47,6 +47,17 @@ void SettingsScene::initOptions(){
 	setNumEnemies();
 	setNumBalls();
 	setScale();
+	auto save_btn = ui::Button::create("button_normal.png", "button_selected.png", "button_disabled.png");
+	save_btn->setTitleText("Save");
+	save_btn->setTitleColor(cocos2d::Color3B::BLACK);
+	save_btn->addTouchEventListener(CC_CALLBACK_2(SettingsScene::saveValues, this));
+	save_btn->setScale(6);
+	auto layout_param = ui::LinearLayoutParameter::create();
+	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
+	layout_param->setMargin(ui::Margin(MARGIN, MARGIN, MARGIN, MARGIN));
+	save_btn->setLayoutParameter(layout_param);
+
+	container->addChild(save_btn);
 	this->addChild(container);
 
 }
@@ -71,10 +82,10 @@ void SettingsScene::setNumEnemies(){
 			});
 
 	num_enemies_slider->setPosition(Vec2(_screen_size.width / 2, _screen_size.height / 2));
-	num_enemies_slider->setScale(4);
+	num_enemies_slider->setScale(SLIDER_SCALE);
 	auto layout_param = ui::LinearLayoutParameter::create();
 	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
-	layout_param->setMargin(ui::Margin(50, 50, 50, 50));
+	layout_param->setMargin(ui::Margin(MARGIN, MARGIN, MARGIN, MARGIN));
 	num_enemies_hint->setLayoutParameter(layout_param);
 	num_enemies_slider->setLayoutParameter(layout_param);
 	container->addChild(num_enemies_hint);
@@ -101,10 +112,10 @@ void SettingsScene::setNumBalls(){
 			});
 
 	num_balls_slider->setPosition(Vec2(_screen_size.width / 2, _screen_size.height / 2));
-	num_balls_slider->setScale(4);
+	num_balls_slider->setScale(SLIDER_SCALE);
 	auto layout_param = ui::LinearLayoutParameter::create();
 	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
-	layout_param->setMargin(ui::Margin(50, 50, 50, 50));
+	layout_param->setMargin(ui::Margin(MARGIN, MARGIN, MARGIN, MARGIN));
 	num_balls_hint->setLayoutParameter(layout_param);
 	num_balls_slider->setLayoutParameter(layout_param);
 	container->addChild(num_balls_hint);
@@ -131,10 +142,10 @@ void SettingsScene::setScale(){
 			});
 
 	scale_slider->setPosition(Vec2(_screen_size.width / 2, _screen_size.height / 2));
-	scale_slider->setScale(4);
+	scale_slider->setScale(SLIDER_SCALE);
 	auto layout_param = ui::LinearLayoutParameter::create();
 	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
-	layout_param->setMargin(ui::Margin(50, 50, 50, 50));
+	layout_param->setMargin(ui::Margin(MARGIN, MARGIN, MARGIN, MARGIN));
 	scale_hint->setLayoutParameter(layout_param);
 	scale_slider->setLayoutParameter(layout_param);
 	container->addChild(scale_hint);
@@ -142,4 +153,15 @@ void SettingsScene::setScale(){
 
 }
 
-
+void SettingsScene::saveValues(Ref* sender, ui::Widget::TouchEventType type){
+	switch(type){
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			log("Button clicked");
+			//TODO write_values to db
+			break;
+		default:
+			break;
+	};
+}
