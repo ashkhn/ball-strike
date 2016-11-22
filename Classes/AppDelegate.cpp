@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "HomeScene.h"
+#include "Database.h"
 
 USING_NS_CC;
 
@@ -23,6 +24,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	auto scene = HomeScreen::createScene();
 	director->runWithScene(scene);
+	bool test = Database::open();
+	log("Database status is %d", test);
+    Database::createTables();
 	
 	return true;
 }

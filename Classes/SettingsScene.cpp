@@ -1,5 +1,5 @@
 #include "SettingsScene.h"
-
+#include "Database.h"
 
 static std::vector<int> num_enemy_values = {2, 4, 8, 10};
 static std::vector<int> num_ball_values = {1, 2, 3, 4};
