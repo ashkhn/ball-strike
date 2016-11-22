@@ -46,7 +46,7 @@ bool Database::createTables(){
 	std::string check_stmt = "select count(type) from sqlite_master where type='table' and name='game_data'";
 	std::vector<std::vector<std::string>> check_result = getQueryResults(check_stmt.c_str());
 	if(check_result[0][0] == "0"){
-		std::string create_stmt = "create table game_data(num_enemies int, num_balls int, scale float)";
+		std::string create_stmt = "create table game_data(num_enemies integer, num_balls integer, scale float)";
 		if(execute(create_stmt)){
 			std::string insert_stmt = "insert into game_data(num_enemies, num_balls, scale) values(4, 2, 1.0)";
 			auto status = execute(insert_stmt) ? "Success" : "Failure";
@@ -58,8 +58,8 @@ bool Database::createTables(){
 }
 
 bool Database::createSaveTables(){
-	std::string create_ball_stmt = "create table if not exists ball_save_data(id int primary_key autoincrement, ball_class int, scale float, posn_x float, posn_y float)";
-	std::string create_enemy_stmt = "create table if not exists enemy_save_data(id int primary_key autoincrement, enemy_class int, posn_x float, posn_y float)";
+	std::string create_ball_stmt = "create table if not exists ball_save_data(id integer primary key autoincrement, ball_class integer, scale float, posn_x float, posn_y float)";
+	std::string create_enemy_stmt = "create table if not exists enemy_save_data(id integer primary key autoincrement, enemy_class integer, posn_x float, posn_y float)";
 	auto ball_status = execute(create_ball_stmt);
 	auto enemy_status = execute(create_enemy_stmt);
 	return ball_status && enemy_status;

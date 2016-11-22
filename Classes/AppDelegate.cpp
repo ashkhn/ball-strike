@@ -24,20 +24,21 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	auto scene = HomeScreen::createScene();
 	director->runWithScene(scene);
-	bool test = Database::open();
-	log("Database status is %d", test);
-    Database::createTables();
-	Database::createSaveTables();
-	
+	Database::open();
+	if(Database::createTables() && Database::createSaveTables()){
+		log("Tables created successfully");
+	}
 	return true;
 }
 
 void AppDelegate::applicationDidEnterBackground() {
 	Director::getInstance()->stopAnimation();
+	Database::close();
 }
 
 void AppDelegate::applicationWillEnterForeground() {
 	Director::getInstance()->startAnimation();
+	Database::open();
 }
 
 void AppDelegate::initGLContextAttrs(){
