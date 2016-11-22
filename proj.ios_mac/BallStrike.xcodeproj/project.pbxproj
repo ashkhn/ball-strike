@@ -13,6 +13,12 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		294D0D641D0D56D500F7F5D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294D0D631D0D56D500F7F5D4 /* CoreText.framework */; };
+		3823322E1DDEE2DA00C05AFA /* SettingsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3823322C1DDEE2DA00C05AFA /* SettingsScene.cpp */; };
+		382332351DDEE2EA00C05AFA /* slider_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 382332301DDEE2EA00C05AFA /* slider_back.png */; };
+		382332361DDEE2EA00C05AFA /* slider_pressbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 382332311DDEE2EA00C05AFA /* slider_pressbar.png */; };
+		382332371DDEE2EA00C05AFA /* slidernode_disable.png in Resources */ = {isa = PBXBuildFile; fileRef = 382332321DDEE2EA00C05AFA /* slidernode_disable.png */; };
+		382332381DDEE2EA00C05AFA /* slidernode_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 382332331DDEE2EA00C05AFA /* slidernode_normal.png */; };
+		382332391DDEE2EA00C05AFA /* slidernode_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 382332341DDEE2EA00C05AFA /* slidernode_pressed.png */; };
 		383EC78F1DDAE1A800B5586D /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC7891DDAE1A800B5586D /* Enemy.cpp */; };
 		383EC7901DDAE1A800B5586D /* EnemySprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC78B1DDAE1A800B5586D /* EnemySprite.cpp */; };
 		383EC7911DDAE1A800B5586D /* GameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC78D1DDAE1A800B5586D /* GameLevel.cpp */; };
@@ -134,6 +140,13 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		294D0D631D0D56D500F7F5D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
+		3823322C1DDEE2DA00C05AFA /* SettingsScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingsScene.cpp; sourceTree = "<group>"; };
+		3823322D1DDEE2DA00C05AFA /* SettingsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsScene.h; sourceTree = "<group>"; };
+		382332301DDEE2EA00C05AFA /* slider_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_back.png; sourceTree = "<group>"; };
+		382332311DDEE2EA00C05AFA /* slider_pressbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_pressbar.png; sourceTree = "<group>"; };
+		382332321DDEE2EA00C05AFA /* slidernode_disable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slidernode_disable.png; sourceTree = "<group>"; };
+		382332331DDEE2EA00C05AFA /* slidernode_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slidernode_normal.png; sourceTree = "<group>"; };
+		382332341DDEE2EA00C05AFA /* slidernode_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slidernode_pressed.png; sourceTree = "<group>"; };
 		383EC7891DDAE1A800B5586D /* Enemy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Enemy.cpp; sourceTree = "<group>"; };
 		383EC78A1DDAE1A800B5586D /* Enemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enemy.h; sourceTree = "<group>"; };
 		383EC78B1DDAE1A800B5586D /* EnemySprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemySprite.cpp; sourceTree = "<group>"; };
@@ -337,6 +350,11 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				382332301DDEE2EA00C05AFA /* slider_back.png */,
+				382332311DDEE2EA00C05AFA /* slider_pressbar.png */,
+				382332321DDEE2EA00C05AFA /* slidernode_disable.png */,
+				382332331DDEE2EA00C05AFA /* slidernode_normal.png */,
+				382332341DDEE2EA00C05AFA /* slidernode_pressed.png */,
 				386BD85F1DDDBCD1006177F0 /* type_advantage.png */,
 				38A9C44E1DDC0AA900E1E479 /* red_arrow.png */,
 				383EC7941DDAF49A00B5586D /* ball_sprites.png */,
@@ -365,6 +383,8 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3823322C1DDEE2DA00C05AFA /* SettingsScene.cpp */,
+				3823322D1DDEE2DA00C05AFA /* SettingsScene.h */,
 				38A8AAAF1DD9BFA600044F45 /* BallSprite.cpp */,
 				383EC7891DDAE1A800B5586D /* Enemy.cpp */,
 				383EC78A1DDAE1A800B5586D /* Enemy.h */,
@@ -542,6 +562,9 @@
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				386BD8601DDDBCD1006177F0 /* type_advantage.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
+				382332351DDEE2EA00C05AFA /* slider_back.png in Resources */,
+				382332361DDEE2EA00C05AFA /* slider_pressbar.png in Resources */,
+				382332371DDEE2EA00C05AFA /* slidernode_disable.png in Resources */,
 				38A8AAB91DD9BFFB00044F45 /* goku.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
@@ -549,6 +572,7 @@
 				38A8AAA71DD98CE200044F45 /* orange_ball_001.png in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,
+				382332381DDEE2EA00C05AFA /* slidernode_normal.png in Resources */,
 				38A8AAA21DD98CE200044F45 /* ball_sprites.png in Resources */,
 				38A8AAAA1DD98CE200044F45 /* purple_ball_002.png in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
@@ -556,6 +580,7 @@
 				38A8AAA41DD98CE200044F45 /* blue_ball_002.png in Resources */,
 				38A8AAB81DD9BFFB00044F45 /* ball_sprites.plist in Resources */,
 				38A8AAAC1DD98CE200044F45 /* red_ball_002.png in Resources */,
+				382332391DDEE2EA00C05AFA /* slidernode_pressed.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
@@ -591,6 +616,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3823322E1DDEE2DA00C05AFA /* SettingsScene.cpp in Sources */,
 				383EC7911DDAE1A800B5586D /* GameLevel.cpp in Sources */,
 				383EC78F1DDAE1A800B5586D /* Enemy.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
