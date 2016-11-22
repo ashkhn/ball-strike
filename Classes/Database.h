@@ -11,6 +11,7 @@ class Database {
 		static bool execute(std::string sql_stmt);
 		static bool createTables();
 		static std::vector<std::vector<std::string>> getQueryResults(const char* query);
+		static bool createSaveTables();
 
 	private:
 		Database();

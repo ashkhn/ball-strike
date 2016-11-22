@@ -57,6 +57,14 @@ bool Database::createTables(){
 	return false;
 }
 
+bool Database::createSaveTables(){
+	std::string create_ball_stmt = "create table if not exists ball_save_data(id int primary_key autoincrement, ball_class int, scale float, posn_x float, posn_y float)";
+	std::string create_enemy_stmt = "create table if not exists enemy_save_data(id int primary_key autoincrement, enemy_class int, posn_x float, posn_y float)";
+	auto ball_status = execute(create_ball_stmt);
+	auto enemy_status = execute(create_enemy_stmt);
+	return ball_status && enemy_status;
+}
+
 std::vector<std::vector<std::string>> Database::getQueryResults(const char* query){
 	sqlite3_stmt* query_stmt;
 	std::vector<std::vector<std::string>> results;

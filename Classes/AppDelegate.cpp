@@ -27,6 +27,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	bool test = Database::open();
 	log("Database status is %d", test);
     Database::createTables();
+	Database::createSaveTables();
 	
 	return true;
 }
