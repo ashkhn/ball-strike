@@ -20,7 +20,4 @@ class SettingsScene : public Layer {
 		void setScale();
 		Size _screen_size;
 		ui::ScrollView* container;
-		const static int num_enemy_values[];
-		const static int num_ball_values[];
-		const static float scale_values[];
 };

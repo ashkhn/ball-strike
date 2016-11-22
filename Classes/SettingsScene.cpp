@@ -1,9 +1,9 @@
 #include "SettingsScene.h"
 
 
-static int num_enemy_values[] = {2, 4, 8, 10};
-static int num_ball_values[] = {1, 2, 3, 4};
-static float scale_values[] = {0.3, 0.4, 0.5, 0.8, 1.0, 1.3, 1.4, 1.5, 1.8, 2.0};
+static std::vector<int> num_enemy_values = {2, 4, 8, 10};
+static std::vector<int> num_ball_values = {1, 2, 3, 4};
+static std::vector<float> scale_values = {0.3, 0.4, 0.5, 0.8, 1.0, 1.3, 1.4, 1.5, 1.8, 2.0};
 
 SettingsScene::SettingsScene(void){}
 
@@ -57,10 +57,16 @@ void SettingsScene::setNumEnemies(){
 	num_enemies_slider->loadBarTexture("slider_back.png");
 	num_enemies_slider->loadSlidBallTextures("slidernode_normal.png", "slidernode_pressed.png", "slidernode_disable.png");
 	num_enemies_slider->loadProgressBarTexture("slider_pressbar.png");
-	num_enemies_slider->addEventListener([](Ref* sender, ui::Slider::EventType type){
+	num_enemies_slider->addEventListener([num_enemies_hint](Ref* sender, ui::Slider::EventType type){
 			auto slider = dynamic_cast<ui::Slider*>(sender);
 			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
-					log("Slider percent %d", slider->getPercent());
+					int chosen_value_idx = (num_enemy_values.size()) * slider->getPercent() / 100;
+					chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);
+					char num_enemies_label[100];
+					std::string format_string = "Number of enemies : %d";
+					sprintf(num_enemies_label, format_string.c_str(), num_enemy_values[chosen_value_idx]);
+					num_enemies_hint->setString(num_enemies_label);
+
 			}
 			});
 
@@ -82,10 +88,15 @@ void SettingsScene::setNumBalls(){
 	num_balls_slider->loadBarTexture("slider_back.png");
 	num_balls_slider->loadSlidBallTextures("slidernode_normal.png", "slidernode_pressed.png", "slidernode_disable.png");
 	num_balls_slider->loadProgressBarTexture("slider_pressbar.png");
-	num_balls_slider->addEventListener([](Ref* sender, ui::Slider::EventType type){
+	num_balls_slider->addEventListener([num_balls_hint](Ref* sender, ui::Slider::EventType type){
 			auto slider = dynamic_cast<ui::Slider*>(sender);
 			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
-					log("Slider percent %d", slider->getPercent());
+					int chosen_value_idx = (num_ball_values.size()) * slider->getPercent() / 100;
+					chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);
+					char num_balls_label[100];
+					std::string format_string = "Number of balls : %d";
+					sprintf(num_balls_label, format_string.c_str(), num_ball_values[chosen_value_idx]);
+					num_balls_hint->setString(num_balls_label);
 			}
 			});
 
@@ -107,10 +118,15 @@ void SettingsScene::setScale(){
 	scale_slider->loadBarTexture("slider_back.png");
 	scale_slider->loadSlidBallTextures("slidernode_normal.png", "slidernode_pressed.png", "slidernode_disable.png");
 	scale_slider->loadProgressBarTexture("slider_pressbar.png");
-	scale_slider->addEventListener([](Ref* sender, ui::Slider::EventType type){
+	scale_slider->addEventListener([scale_hint](Ref* sender, ui::Slider::EventType type){
 			auto slider = dynamic_cast<ui::Slider*>(sender);
 			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
-					log("Slider percent %d", slider->getPercent());
+				int chosen_value_idx = (scale_values.size()) * slider->getPercent() / 100;
+				chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);
+				char scale_label[100];
+				std::string format_string = "Scaling for balls : %.2f";
+				sprintf(scale_label, format_string.c_str(), scale_values[chosen_value_idx]);
+				scale_hint->setString(scale_label);
 			}
 			});
 
