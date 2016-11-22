@@ -1,6 +1,10 @@
 #include "SettingsScene.h"
 
 
+static int num_enemy_values[] = {2, 4, 8, 10};
+static int num_ball_values[] = {1, 2, 3, 4};
+static float scale_values[] = {0.3, 0.4, 0.5, 0.8, 1.0, 1.3, 1.4, 1.5, 1.8, 2.0};
+
 SettingsScene::SettingsScene(void){}
 
 SettingsScene::~SettingsScene(void){}
@@ -37,13 +41,12 @@ void SettingsScene::initOptions(){
 	container->setPosition(Point(15, 5));
 	container->setContentSize(Size(_screen_size.width - 30.0f, _screen_size.height - 30.0f));
 	container->setDirection(ui::ScrollView::Direction::VERTICAL);
-	auto container_size = Size(_screen_size.width, _screen_size.height * 2);
+	auto container_size = Size(_screen_size.width, _screen_size.height);
 	container->setInnerContainerSize(container_size);
 	container->setLayoutType(ui::Layout::Type::VERTICAL);
 	setNumEnemies();
 	setNumBalls();
 	setScale();
-	setNumMoves();
 	this->addChild(container);
 
 }
@@ -124,27 +127,3 @@ void SettingsScene::setScale(){
 }
 
 
-void SettingsScene::setNumMoves(){
-	auto num_moves_hint = ui::Text::create("Number of moves", "fonts/arial.ttf", SETTINGS_FONT_SIZE);
-	auto num_moves_slider = ui::Slider::create();
-	num_moves_slider->loadBarTexture("slider_back.png");
-	num_moves_slider->loadSlidBallTextures("slidernode_normal.png", "slidernode_pressed.png", "slidernode_disable.png");
-	num_moves_slider->loadProgressBarTexture("slider_pressbar.png");
-	num_moves_slider->addEventListener([](Ref* sender, ui::Slider::EventType type){
-			auto slider = dynamic_cast<ui::Slider*>(sender);
-			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
-					log("Slider percent %d", slider->getPercent());
-			}
-			});
-
-	num_moves_slider->setPosition(Vec2(_screen_size.width / 2, _screen_size.height / 2));
-	num_moves_slider->setScale(4);
-	auto layout_param = ui::LinearLayoutParameter::create();
-	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
-	layout_param->setMargin(ui::Margin(50, 50, 50, 50));
-	num_moves_hint->setLayoutParameter(layout_param);
-	num_moves_slider->setLayoutParameter(layout_param);
-	container->addChild(num_moves_hint);
-	container->addChild(num_moves_slider);
-
-}
