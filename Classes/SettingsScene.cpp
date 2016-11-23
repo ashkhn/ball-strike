@@ -67,13 +67,12 @@ void SettingsScene::getPreviousValues(){
 	std::string get_stmt = "select * from game_data";
 	std::vector<std::vector<std::string>> results = Database::getQueryResults(get_stmt.c_str());
 	chosen_num_enemies = std::stoi(results[1][0]);
-	log("Chosen enemies is %s", results[1][0].c_str());
 	chosen_num_balls = std::stoi(results[1][1]);
 	chosen_scale = std::stof(results[1][2]);
 }
 
 void SettingsScene::setNumEnemies(){
-	std::string format_string = "Number of enemies : %d";
+	const std::string format_string = "Number of enemies : %d";
 	char num_enemies_label[100];
 	sprintf(num_enemies_label, format_string.c_str(), chosen_num_enemies);
 	auto num_enemies_hint = ui::Text::create("Number of enemies", "fonts/arial.ttf", SETTINGS_FONT_SIZE);
@@ -184,7 +183,7 @@ void SettingsScene::setScale(){
 void SettingsScene::saveValues(Ref* sender, ui::Widget::TouchEventType type){
 
 	char update_stmt[200];
-	std::string format_string = "update game_data set num_enemies=%d, num_balls=%d, scale=%f";
+	const std::string format_string = "update game_data set num_enemies=%d, num_balls=%d, scale=%f";
 
 	switch(type){
 		case ui::Widget::TouchEventType::BEGAN:

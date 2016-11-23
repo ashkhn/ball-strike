@@ -3,8 +3,6 @@
 #include "BallSprite.h"
 #include "Enemy.h"
 
-#define NUM_BALLS_PER_LEVEL 2
-#define NUM_ENEMIES_PER_LEVEL 4
 #define RESTITUTION_COEFF 0.8f
 #define VELOCITY_SCALE_FACTOR 8.0f
 #define BALL_DECELERATION 0.98f
@@ -22,4 +20,8 @@ class GameLevel {
 		void initLevel();
 		Size _screen_size;
 		bool is_busy;
+		int num_balls;
+		int num_enemies;
+		float ball_scale;
+		void loadValues();
 };
