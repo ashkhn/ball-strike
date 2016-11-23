@@ -6,4 +6,4 @@ This is a small sample game built using the Cocos2D-X framework.
  - Run it on the appropriate device/emulator
 
 
-* If you wish to compile for android-studio it is recommended that you set `org.gradle.daemon=true` inside `gradle.properties`
+* If you wish to compile for android-studio it is recommended that you set `org.gradle.daemon=true` inside `gradle.properties` to speed up build times.
