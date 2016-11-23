@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "HomeScene.h"
+#include "Database.h"
 
 USING_NS_CC;
 
@@ -23,16 +24,21 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	auto scene = HomeScreen::createScene();
 	director->runWithScene(scene);
-	
+	Database::open();
+	if(Database::createDataTables() && Database::createSaveTables()){
+		log("Tables created successfully");
+	}
 	return true;
 }
 
 void AppDelegate::applicationDidEnterBackground() {
 	Director::getInstance()->stopAnimation();
+	Database::close();
 }
 
 void AppDelegate::applicationWillEnterForeground() {
 	Director::getInstance()->startAnimation();
+	Database::open();
 }
 
 void AppDelegate::initGLContextAttrs(){
