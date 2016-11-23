@@ -42,18 +42,15 @@ bool Database::execute(std::string sql){
 	return true;
 }
 
-bool Database::createTables(){
-	std::string check_stmt = "select count(type) from sqlite_master where type='table' and name='game_data'";
-	std::vector<std::vector<std::string>> check_result = getQueryResults(check_stmt.c_str());
-	if(check_result[0][0] == "0"){
-		std::string create_stmt = "create table game_data(num_enemies integer, num_balls integer, scale float)";
-		if(execute(create_stmt)){
-			std::string insert_stmt = "insert into game_data(num_enemies, num_balls, scale) values(4, 2, 1.0)";
-			auto status = execute(insert_stmt) ? "Success" : "Failure";
-			log("The operation status was %s", status);
-			return true;
-		}
+bool Database::createDataTables(){
+	std::string create_stmt = "create table if not exists game_data(num_enemies integer, num_balls integer, scale float)";
+	if(execute(create_stmt)){
+		std::string insert_stmt = "insert into game_data(num_enemies, num_balls, scale) values(4, 2, 1.0)";
+		auto status = execute(insert_stmt) ? "Success" : "Failure";
+		log("The operation status was %s", status);
+		return true;
 	}
+
 	return false;
 }
 

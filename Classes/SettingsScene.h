@@ -20,6 +20,7 @@ class SettingsScene : public Layer {
 		void setNumEnemies();
 		void setNumBalls();
 		void setScale();
+		void getPreviousValues();
 		void saveValues(Ref* sender, ui::Widget::TouchEventType type);
 		Size _screen_size;
 		ui::ScrollView* container;
