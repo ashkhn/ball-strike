@@ -17,6 +17,7 @@ class SettingsScene : public Layer {
 		virtual bool init() override;
 		CREATE_FUNC(SettingsScene);
 		void initOptions();	
+		void handleBack(EventKeyboard::KeyCode key_code, Event* event);
 		void setNumEnemies();
 		void setNumBalls();
 		void setScale();

@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "GameLevel.h"
+#include "HomeScene.h"
 USING_NS_CC;
 
 
@@ -48,14 +49,21 @@ bool Game::init(){
 	listener->onTouchBegan = CC_CALLBACK_2(Game::onTouchBegan, this);
 	listener->onTouchMoved = CC_CALLBACK_2(Game::onTouchMoved, this);
 	listener->onTouchEnded = CC_CALLBACK_2(Game::onTouchEnded, this);
+	
+	auto key_listener = EventListenerKeyboard::create();
+	key_listener->onKeyReleased = CC_CALLBACK_2(Game::handleBack, this);
 
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
 
 	generateLevel(is_resumed);
 	this->scheduleUpdate();
 
 	return true;
+}
+
+void Game::handleBack(EventKeyboard::KeyCode key_code, Event* event){
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
 }
 
 void Game::generateLevel(bool is_resumed){
