@@ -19,5 +19,6 @@ class Game : public Layer{
 		virtual bool onTouchBegan(Touch* touch, Event* event) override;
 		virtual void onTouchMoved(Touch* touch, Event* event) override;
 		virtual void onTouchEnded(Touch* touch, Event* event) override;
+		void handleBack(EventKeyboard::KeyCode key_code, Event* event);
 		float getAngle(Vec2 a, Vec2 b);
 };

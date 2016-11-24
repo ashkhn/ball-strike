@@ -34,7 +34,7 @@ void GameLevel::initLevel(){
 				position = Vec2(rand_x, rand_y);
 			}
 		}
-
+		new_ball->setScale(ball_scale);
 		new_ball->setPosition(position);
 		attack_balls.push_back(new_ball);
 	}

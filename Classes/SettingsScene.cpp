@@ -1,5 +1,6 @@
 #include "SettingsScene.h"
 #include "Database.h"
+#include "HomeScene.h"
 
 static std::vector<int> num_enemy_values = {2, 4, 8, 10};
 static std::vector<int> num_ball_values = {1, 2, 3, 4};
@@ -32,7 +33,16 @@ bool SettingsScene::init(){
 		return false;
 	}
 	initOptions();
+	auto listener = EventListenerKeyboard::create();
+	listener->onKeyReleased = CC_CALLBACK_2(SettingsScene::handleBack, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	return true;
+}
+
+void SettingsScene::handleBack(EventKeyboard::KeyCode key_code, Event* event){
+	if(key_code == EventKeyboard::KeyCode::KEY_BACK){
+		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
+	}
 }
 
 void SettingsScene::initOptions(){
@@ -85,12 +95,13 @@ void SettingsScene::setNumEnemies(){
 	int initial_percent = ( (float) (initial_idx + 1) / num_enemy_values.size()) * 100;
 	num_enemies_slider->setPercent(initial_percent);
 	auto &local_num_enemies = chosen_num_enemies;
-	num_enemies_slider->addEventListener([num_enemies_hint, &num_enemies_label, &local_num_enemies, format_string](Ref* sender, ui::Slider::EventType type){
+	num_enemies_slider->addEventListener([num_enemies_hint, &local_num_enemies, format_string](Ref* sender, ui::Slider::EventType type){
 			auto slider = dynamic_cast<ui::Slider*>(sender);
 			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
 					int chosen_value_idx = (num_enemy_values.size()) * slider->getPercent() / 100;
 					chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);
 					local_num_enemies = num_enemy_values[chosen_value_idx];
+					char num_enemies_label[100];
 					sprintf(num_enemies_label, format_string.c_str(),local_num_enemies);
 					num_enemies_hint->setString(num_enemies_label);
 			}
@@ -121,12 +132,13 @@ void SettingsScene::setNumBalls(){
 	int initial_percent = ( (float) (initial_idx + 1) / num_ball_values.size()) * 100;
 	num_balls_slider->setPercent(initial_percent);
 	auto &local_num_balls = chosen_num_balls;
-	num_balls_slider->addEventListener([num_balls_hint, &num_balls_label, &local_num_balls, format_string](Ref* sender, ui::Slider::EventType type){
+	num_balls_slider->addEventListener([num_balls_hint, &local_num_balls, format_string](Ref* sender, ui::Slider::EventType type){
 			auto slider = dynamic_cast<ui::Slider*>(sender);
 			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
 					int chosen_value_idx = (num_ball_values.size()) * slider->getPercent() / 100;
 					chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);
 					local_num_balls = num_ball_values[chosen_value_idx];
+					char num_balls_label[100];
 					sprintf(num_balls_label, format_string.c_str(), local_num_balls);
 					num_balls_hint->setString(num_balls_label);
 			}
@@ -157,12 +169,13 @@ void SettingsScene::setScale(){
 	int initial_percent = ( (float) (initial_idx + 1) / scale_values.size()) * 100;
 	scale_slider->setPercent(initial_percent);
 	auto &local_scale = chosen_scale;
-	scale_slider->addEventListener([scale_hint, &scale_label, &local_scale, format_string](Ref* sender, ui::Slider::EventType type){
+	scale_slider->addEventListener([scale_hint, &local_scale, format_string](Ref* sender, ui::Slider::EventType type){
 			auto slider = dynamic_cast<ui::Slider*>(sender);
 			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
 				int chosen_value_idx = (scale_values.size()) * slider->getPercent() / 100;
 				chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);
 				local_scale = scale_values[chosen_value_idx];
+				char scale_label[100];
 				sprintf(scale_label, format_string.c_str(), local_scale);
 				scale_hint->setString(scale_label);
 			}
