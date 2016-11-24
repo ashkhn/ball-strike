@@ -32,12 +32,16 @@ BallSprite* BallSprite::generateRandomSprite(){
 	return ball;
 }
 
+/** Override the setPosition method of the parent Node 
+ *  Sets the _next_position
+ */
 void BallSprite::setPosition(const Point& pos){
 	Sprite::setPosition(pos);
 	if(!_next_position.equals(pos)){
 		_next_position = pos;
 	}
 }
+
 
 void BallSprite::setSelected(bool selected){
 	this->_is_selected = selected;
@@ -58,16 +62,14 @@ void BallSprite::setupAnimation(const char* format){
 	for (int i = 1; i <= NUM_SPRITES_PER_CLASS ; i++){
 		sprintf(file_name, format, i);
 		anim_frames.pushBack(sprite_cache->getSpriteFrameByName(file_name));
-
 	}
 	
 }
 
 // Calculates the radius to help calculate the positioning of the sprite
+// In this case the texture represents the entire spritesheet, hence its 
+// dimensions cannot be used
 // @return the 'radius' of the sprite
 float BallSprite::radius(){
-    //  getContentSize returns the size of the spritesheet used. Hence the factor 
-    // and since each ball has the same dimensions
-	/* return getTexture()->getContentSize().width * 0.5; */
-	return (float) 297 / 2;
+	return this->getContentSize().width  * 0.5f;
 }

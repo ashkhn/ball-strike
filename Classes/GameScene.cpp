@@ -38,6 +38,7 @@ bool Game::init(){
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("ball_sprites.plist");
 	bool is_resumed = UserDefault::getInstance()->getBoolForKey("is_resumed");
 
+	// Setup background
 	auto bg_sprite = Sprite::create("grass.png");
 	auto scale_x = _screen_size.width / bg_sprite->getContentSize().width;
 	auto scale_y = _screen_size.height / bg_sprite->getContentSize().height;
@@ -45,11 +46,13 @@ bool Game::init(){
 	bg_sprite->setScale(scale_x, scale_y * 1.2);
 	this->addChild(bg_sprite);
 
+	//Start listening for touch events
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = CC_CALLBACK_2(Game::onTouchBegan, this);
 	listener->onTouchMoved = CC_CALLBACK_2(Game::onTouchMoved, this);
 	listener->onTouchEnded = CC_CALLBACK_2(Game::onTouchEnded, this);
 	
+	// Listener for android back button
 	auto key_listener = EventListenerKeyboard::create();
 	key_listener->onKeyReleased = CC_CALLBACK_2(Game::handleBack, this);
 
@@ -62,10 +65,13 @@ bool Game::init(){
 	return true;
 }
 
+/* Handle back button press on android */
 void Game::handleBack(EventKeyboard::KeyCode key_code, Event* event){
 	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
 }
 
+/* Generate the game level */
+/* @param is_resumed : Defines whether a new level is to be generated or an old level needs to be resumed */
 void Game::generateLevel(bool is_resumed){
 
 	game_level = new GameLevel(_screen_size);
@@ -76,7 +82,7 @@ void Game::generateLevel(bool is_resumed){
 	auto sprite_h = adv_sprite->getBoundingBox().size.height / 2;
 	auto sprite_w = adv_sprite->getBoundingBox().size.width / 2;
 	adv_sprite->setPosition(Vec2(_screen_size.width - sprite_w, _screen_size.height - sprite_h ));
-	this->addChild(adv_sprite);
+	this->addChild(adv_sprite, 2);
 
 	for(auto ball: game_level->attack_balls){
 		this->addChild(ball);
@@ -88,7 +94,9 @@ void Game::generateLevel(bool is_resumed){
 	}
 }
 
-
+/* Called when a user's finger lands on screen */
+/* Checks if a ball was touched and adds the arrow sprite to choose direction of shooting */
+/* @return true if the event was handled and false otherwise */
 bool Game::onTouchBegan(Touch* touch, Event* event){
 	if(touch != nullptr && !game_level->is_busy){
 		auto tap = touch->getLocation();
@@ -108,6 +116,8 @@ bool Game::onTouchBegan(Touch* touch, Event* event){
 	return false;
 }
 
+/* Called when the user's finger moves on the screen without lifting */
+/* Checks a ball was selected and calculates the arrow length and rotation based on the distance moved */
 void Game::onTouchMoved(Touch* touch, Event* event){
 	if(touch != nullptr){
 		auto tap = touch->getLocation();
@@ -120,13 +130,15 @@ void Game::onTouchMoved(Touch* touch, Event* event){
 				auto orig_length = game_level->arrow->getTexture()->getContentSize().width;
 				auto scale = sq_dist / std::pow(orig_length, 2);
 				game_level->arrow->setScaleX(scale);
-                auto angle = std::atan2(-diff_y, diff_x);
-                game_level->arrow->setRotation(CC_RADIANS_TO_DEGREES(angle) - 180);
+				auto angle = std::atan2(-diff_y, diff_x);
+				game_level->arrow->setRotation(CC_RADIANS_TO_DEGREES(angle) - 180);
 			}
 		}
 	}
 }
 
+/* Called when the user finger leaves the screen */
+/* Checks if a ball was selected and imparts a velocity to the ball */
 void Game::onTouchEnded(Touch* touch, Event* event){
 	//TODO calculate the velocity vector and move the ball
 	log("touch end called");
@@ -143,6 +155,9 @@ void Game::onTouchEnded(Touch* touch, Event* event){
 	}
 }
 
+/* Game update loop. Called every frame */
+/* Checks every ball and updates their positions and velocities */ 
+/* Also handles collisions with other balls and enemies */
 void Game::update(float dt){
 	for (auto ball : game_level->attack_balls){
 		if (ball->getVelocity() != Vec2(0,0)){
@@ -191,13 +206,12 @@ void Game::update(float dt){
 						float alpha = getAngle(ball_velocity, collision_axis);
 						float beta = getAngle(other_ball->getVelocity(), collision_axis);
 						float phi = getAngle(collision_axis, Vec2(0,0));
+						// Update ball velocities
 						ball_velocity.x = other_vel_mag * std::cos(beta) * std::cos(phi) - ball_vel_mag * std::sin(alpha) * std::sin(phi);
 						ball_velocity.y = other_vel_mag * std::cos(beta) * std::sin(phi) + ball_vel_mag * std::sin(alpha) * std::cos(phi);
 						auto other_vel_x = ball_vel_mag * std::cos(alpha) * std::cos(phi) - other_vel_mag * std::sin(beta) * std::sin(phi);
 						auto other_vel_y = ball_vel_mag * std::cos(alpha) * std::sin(phi) + other_vel_mag * std::sin(beta) * std::cos(phi);
 						other_ball->setVelocity(Vec2(other_vel_x, other_vel_y));
-						auto other_step_x = other_ball->getVelocity().x;
-						auto other_step_y = other_ball->getVelocity().y;
 						auto norm_axis = collision_axis.getNormalized();
 						ball_next_posn -= 0.5f * ball->radius() * norm_axis;
 					}
@@ -232,12 +246,13 @@ void Game::update(float dt){
 			}
 
 			ball_velocity *= BALL_DECELERATION;
-			//Update info
-			if (ball_velocity.lengthSquared() < 10){
+			// If velocity goes below threshold then stop the ball
+			if (ball_velocity.lengthSquared() < VELOCITY_THRESHOLD){
 				ball_velocity = Vec2(0, 0);
 				ball->setTouch(nullptr);
 				game_level->is_busy = false;
 			}
+			// Update ball velocity and position
 			ball->setVelocity(ball_velocity);
 			ball->setNextPosition(ball_next_posn);
 			ball->setPosition(ball->getNextPosition());
@@ -247,6 +262,9 @@ void Game::update(float dt){
 }
 
 
+/* Helper function to calculate the angle between 2 vectors */
+/* @param a and @param b: Input vectors */
+/* @return the angle in radians between between a and b moving counter clockwise */
 float Game::getAngle(Vec2 a, Vec2 b){
 	float num = b.x * a.y - b.y * a.x;
 	float den = a.x * b.x + b.y * a.y;

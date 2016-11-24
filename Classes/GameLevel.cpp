@@ -1,20 +1,22 @@
 #include "GameLevel.h"
 #include "Database.h"
 
+/* Initialize the game level object with the screen size */
 GameLevel::GameLevel(Size screen_size){
 	this->_screen_size = screen_size;
 }
 
 GameLevel::~GameLevel(void){}
 
+/* Generate a new game level */
 void GameLevel::initLevel(){
 	
 	attack_balls.clear();
 	enemies.clear();
-	loadValues();
+	loadValues(); //Load configuration from database
 	float min_x, min_y, max_x, max_y;
 	
-
+	// Generate balls
 	for (int i = 0; i < num_balls; i++){
 		BallSprite* new_ball = BallSprite::generateRandomSprite();
 		new_ball->id = i + 1;
@@ -39,6 +41,7 @@ void GameLevel::initLevel(){
 		attack_balls.push_back(new_ball);
 	}
 
+	// Generate enemies
 	for (int  i = 0; i < num_enemies; i++){
 		auto enemy = new Enemy(20);
 		min_x = enemy->sprite->width();
@@ -60,6 +63,7 @@ void GameLevel::initLevel(){
 
 }
 
+/* Loads game configuration from database */
 void GameLevel::loadValues(){
 	std::string query_stmt = "select * from game_data";
 	std::vector<std::vector<std::string>> results = Database::getQueryResults(query_stmt.c_str());

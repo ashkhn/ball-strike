@@ -24,6 +24,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	auto scene = HomeScreen::createScene();
 	director->runWithScene(scene);
+	// Create database tables
 	Database::open();
 	if(Database::createDataTables() && Database::createSaveTables()){
 		log("Tables created successfully");
@@ -31,11 +32,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	return true;
 }
 
+/* Called when the application enters the background.
+ * Use this to stop all running animations and close the database connection
+ */
 void AppDelegate::applicationDidEnterBackground() {
 	Director::getInstance()->stopAnimation();
 	Database::close();
 }
 
+/* Called when the application is about to enter foreground */
+/* Use this to resume animations and open the database connection again 
+*/
 void AppDelegate::applicationWillEnterForeground() {
 	Director::getInstance()->startAnimation();
 	Database::open();
