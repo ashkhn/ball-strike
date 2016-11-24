@@ -93,6 +93,7 @@ void GameLevel::resumeLevel(){
 		int enemy_class = std::stoi(curr_enemy_values[1]);
 		int hits_left = std::stoi(curr_enemy_values[2]);
 		auto enemy = new Enemy(hits_left);
+		enemy->sprite = EnemySprite::gameSpriteWithFile(EnemySprite::sprite_paths[enemy_class]);
 		enemy->sprite->enemy_class = static_cast<EnemyClass> (enemy_class);
 
 		enemy->sprite->setPositionX(std::stof(curr_enemy_values[3]));
