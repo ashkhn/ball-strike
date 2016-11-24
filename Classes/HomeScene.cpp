@@ -19,7 +19,7 @@ Scene* HomeScreen::createScene(){
 }
 
 bool HomeScreen::init(){
-	if(!Layer::init()){
+	if (!Layer::init()){
 		return false;
 	}
 	

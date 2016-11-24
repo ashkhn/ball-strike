@@ -37,7 +37,7 @@ BallSprite* BallSprite::generateRandomSprite(){
  */
 void BallSprite::setPosition(const Point& pos){
 	Sprite::setPosition(pos);
-	if(!_next_position.equals(pos)){
+	if (!_next_position.equals(pos)){
 		_next_position = pos;
 	}
 }

@@ -84,7 +84,7 @@ void Game::generateLevel(bool is_resumed){
 	adv_sprite->setPosition(Vec2(_screen_size.width - sprite_w, _screen_size.height - sprite_h ));
 	this->addChild(adv_sprite, 2);
 
-	for(auto ball: game_level->attack_balls){
+	for (auto ball: game_level->attack_balls){
 		this->addChild(ball);
 	}
 
@@ -98,7 +98,7 @@ void Game::generateLevel(bool is_resumed){
 /* Checks if a ball was touched and adds the arrow sprite to choose direction of shooting */
 /* @return true if the event was handled and false otherwise */
 bool Game::onTouchBegan(Touch* touch, Event* event){
-	if(touch != nullptr && !game_level->is_busy){
+	if (touch != nullptr && !game_level->is_busy){
 		auto tap = touch->getLocation();
 		for (auto ball : game_level->attack_balls){
 			if (ball->getBoundingBox().containsPoint(tap)){
@@ -119,7 +119,7 @@ bool Game::onTouchBegan(Touch* touch, Event* event){
 /* Called when the user's finger moves on the screen without lifting */
 /* Checks a ball was selected and calculates the arrow length and rotation based on the distance moved */
 void Game::onTouchMoved(Touch* touch, Event* event){
-	if(touch != nullptr){
+	if (touch != nullptr){
 		auto tap = touch->getLocation();
 		for (auto ball : game_level->attack_balls){
 			if (ball->getTouch() != nullptr && ball->getTouch() == touch) {
@@ -223,8 +223,8 @@ void Game::update(float dt){
 				auto dist_vec = enemy->sprite->getPosition() - ball->getPosition();
 				auto future_dist_vec = enemy->sprite->getPosition() - ball_next_posn;
 				auto sum_radii = std::pow(ball->radius() + enemy->sprite->radius(), 2);
-				if(dist_vec.lengthSquared() <= sum_radii || future_dist_vec.lengthSquared() <= sum_radii){
-					if(enemy->current_hits < enemy->max_hits){
+				if (dist_vec.lengthSquared() <= sum_radii || future_dist_vec.lengthSquared() <= sum_radii){
+					if (enemy->current_hits < enemy->max_hits){
 						enemy->getHit();
 						log("Enemy collision about to happen");
 						auto collision_axis = dist_vec;

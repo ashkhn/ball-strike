@@ -41,7 +41,7 @@ bool SettingsScene::init(){
 
 /* Handle back button press on android */
 void SettingsScene::handleBack(EventKeyboard::KeyCode key_code, Event* event){
-	if(key_code == EventKeyboard::KeyCode::KEY_BACK){
+	if (key_code == EventKeyboard::KeyCode::KEY_BACK){
 		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
 	}
 }
@@ -108,7 +108,7 @@ void SettingsScene::setNumEnemies(){
 	//Setup listener to change for slide change event
 	num_enemies_slider->addEventListener([num_enemies_hint, &local_num_enemies, format_string](Ref* sender, ui::Slider::EventType type){
 			auto slider = dynamic_cast<ui::Slider*>(sender);
-			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
+			if (type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
 					// Get the chosen value based on the values vector and current percentage
 					int chosen_value_idx = (num_enemy_values.size()) * slider->getPercent() / 100;
 					chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);
@@ -157,7 +157,7 @@ void SettingsScene::setNumBalls(){
 	//Setup listener to listen for slider change event
 	num_balls_slider->addEventListener([num_balls_hint, &local_num_balls, format_string](Ref* sender, ui::Slider::EventType type){
 			auto slider = dynamic_cast<ui::Slider*>(sender);
-			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
+			if (type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
 					// Get the chosen value based on the values vector and current percentage
 					int chosen_value_idx = (num_ball_values.size()) * slider->getPercent() / 100;
 					chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);
@@ -204,7 +204,7 @@ void SettingsScene::setScale(){
 	auto &local_scale = chosen_scale;
 	scale_slider->addEventListener([scale_hint, &local_scale, format_string](Ref* sender, ui::Slider::EventType type){
 			auto slider = dynamic_cast<ui::Slider*>(sender);
-			if(type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
+			if (type ==ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
 				// Get the chosen value based on the values vector and current percentage
 				int chosen_value_idx = (scale_values.size()) * slider->getPercent() / 100;
 				chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);

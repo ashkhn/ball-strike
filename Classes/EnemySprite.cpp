@@ -10,7 +10,7 @@ const std::string EnemySprite::sprite_paths[] = {"goku.png", "vegeta.png"};
 /* @param file_name : File name of the image */ 
 EnemySprite* EnemySprite::gameSpriteWithFile(std::string file_name){
 	auto sprite = new EnemySprite();
-	if(sprite && sprite->initWithFile(file_name)){
+	if (sprite && sprite->initWithFile(file_name)){
 		sprite->autorelease();
 		return sprite;
 	}

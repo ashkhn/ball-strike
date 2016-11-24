@@ -26,7 +26,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	director->runWithScene(scene);
 	// Create database tables
 	Database::open();
-	if(Database::createDataTables() && Database::createSaveTables()){
+	if (Database::createDataTables() && Database::createSaveTables()){
 		log("Tables created successfully");
 	}
 	return true;
