@@ -18,6 +18,7 @@ class SettingsScene : public Layer {
 		CREATE_FUNC(SettingsScene);
 		void initOptions();	
 		void handleBack(EventKeyboard::KeyCode key_code, Event* event);
+		template <class T> void addSlider(std::string format_string, std::vector<T> values, T &chosen_value);
 		void setNumEnemies();
 		void setNumBalls();
 		void setScale();
