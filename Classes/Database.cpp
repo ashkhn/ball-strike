@@ -56,7 +56,7 @@ bool Database::createDataTables(){
 
 bool Database::createSaveTables(){
 	std::string create_ball_stmt = "create table if not exists ball_save_data(id integer primary key autoincrement, ball_class integer, scale float, posn_x float, posn_y float)";
-	std::string create_enemy_stmt = "create table if not exists enemy_save_data(id integer primary key autoincrement, enemy_class integer, posn_x float, posn_y float)";
+	std::string create_enemy_stmt = "create table if not exists enemy_save_data(id integer primary key autoincrement, enemy_class integer, hits_left integer, posn_x float, posn_y float)";
 	auto ball_status = execute(create_ball_stmt);
 	auto enemy_status = execute(create_enemy_stmt);
 	return ball_status && enemy_status;
