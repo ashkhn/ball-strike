@@ -25,4 +25,6 @@ class GameLevel {
 		int num_enemies;
 		float ball_scale;
 		void loadValues();
+		void saveLevel();
+		void resumeLevel();
 };

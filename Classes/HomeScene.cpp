@@ -41,6 +41,7 @@ bool HomeScreen::init(){
 void HomeScreen::initMenu(){
 
 	bool save_exists = UserDefault::getInstance()->getBoolForKey("save_exists");
+	log("Save exists is %d", save_exists);
 
 	Menu *menu;
 
@@ -76,11 +77,13 @@ void HomeScreen::initMenu(){
 }
 
 void HomeScreen::startGameCallback(Ref* sender){
+	UserDefault::getInstance()->setBoolForKey("is_resumed", false);
 	Director::getInstance()->replaceScene(TransitionFade::create(1, Game::createScene()));
 }
 
 void HomeScreen::resumeGameCallback(Ref* sender){
 	UserDefault::getInstance()->setBoolForKey("is_resumed", true);
+	Director::getInstance()->replaceScene(TransitionFade::create(1, Game::createScene()));
 }
 
 void HomeScreen::settingsCallback(Ref* sender){

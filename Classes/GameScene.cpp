@@ -68,6 +68,7 @@ bool Game::init(){
 /* Handle back button press on android */
 void Game::handleBack(EventKeyboard::KeyCode key_code, Event* event){
 	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
+	game_level->saveLevel();
 }
 
 /* Generate the game level */
@@ -75,7 +76,11 @@ void Game::handleBack(EventKeyboard::KeyCode key_code, Event* event){
 void Game::generateLevel(bool is_resumed){
 
 	game_level = new GameLevel(_screen_size);
-	game_level->initLevel();
+	if(is_resumed){
+		game_level->resumeLevel();
+	}else{
+		game_level->initLevel();
+	}
 
 	auto adv_sprite = Sprite::create("type_advantage.png");
 	adv_sprite->setScale(2);
