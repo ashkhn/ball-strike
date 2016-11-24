@@ -19,12 +19,13 @@ Scene* HomeScreen::createScene(){
 }
 
 bool HomeScreen::init(){
-	if(!Layer::init()){
+	if (!Layer::init()){
 		return false;
 	}
 	
 	_screen_size = Director::getInstance()->getVisibleSize();
 
+	// Set the background
 	auto bg_sprite = Sprite::create("grass.png");
 	auto scale_x = _screen_size.width / bg_sprite->getContentSize().width;
 	auto scale_y = _screen_size.height / bg_sprite->getContentSize().height;
@@ -36,6 +37,7 @@ bool HomeScreen::init(){
 	return true;
 }
 
+/* Setup the menu. Checks if a save exists and enables the resume option based on it */
 void HomeScreen::initMenu(){
 
 	bool save_exists = UserDefault::getInstance()->getBoolForKey("save_exists");

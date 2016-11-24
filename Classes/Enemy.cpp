@@ -1,4 +1,7 @@
 #include "Enemy.h"
+
+/* Construct an Enemy object with the max_hits it can take */
+/* @param max_hits: Defines the max number of hits that the this enemy can take before dying */
 Enemy::Enemy(int max_hits){
 	this->max_hits = max_hits;
 	this->sprite = EnemySprite::generateRandomSprite();
@@ -9,8 +12,11 @@ Enemy::Enemy(int max_hits){
 	this->hits_left = Label::createWithTTF(max_hit_str, "fonts/arial.ttf", 72);
 }
 
+
 Enemy::~Enemy(void){}
 
+/* Helper method to carry out hit action for the enemy object */
+/* Updates the remaining hits label and current hits */
 void Enemy::getHit(){
 	current_hits +=1;
 	int num_hits_left = max_hits - current_hits;
