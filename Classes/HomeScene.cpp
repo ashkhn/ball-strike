@@ -1,6 +1,7 @@
 #include "HomeScene.h"
 #include "GameScene.h"
 #include "SettingsScene.h"
+#include "LoginScene.h"
 
 
 HomeScreen::HomeScreen(void){}
@@ -87,7 +88,8 @@ void HomeScreen::resumeGameCallback(Ref* sender){
 }
 
 void HomeScreen::settingsCallback(Ref* sender){
-	Director::getInstance()->replaceScene(TransitionFade::create(1,SettingsScene::createScene()));
+	/* Director::getInstance()->replaceScene(TransitionFade::create(1,SettingsScene::createScene())); */
+	Director::getInstance()->replaceScene(TransitionFade::create(1, LoginScene::createScene()));
 }
 
 void HomeScreen::gameQuitCallback(Ref* sender){
