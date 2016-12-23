@@ -88,8 +88,7 @@ void HomeScreen::resumeGameCallback(Ref* sender){
 }
 
 void HomeScreen::settingsCallback(Ref* sender){
-	/* Director::getInstance()->replaceScene(TransitionFade::create(1,SettingsScene::createScene())); */
-	Director::getInstance()->replaceScene(TransitionFade::create(1, LoginScene::createScene()));
+	Director::getInstance()->replaceScene(TransitionFade::create(1,SettingsScene::createScene()));
 }
 
 void HomeScreen::gameQuitCallback(Ref* sender){

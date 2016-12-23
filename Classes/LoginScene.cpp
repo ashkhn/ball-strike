@@ -1,4 +1,6 @@
 #include "LoginScene.h"
+#include "spine/Json.h"
+#include "ui/CocosGUI.h"
 
 LoginScene::LoginScene(void){}
 
@@ -17,16 +19,19 @@ bool LoginScene::init(){
 	if(!Layer::init()){
 		return false;
 	}
+
+	UserDefault::getInstance()->setBoolForKey("is_first_startup", false);
+
 	network::HttpRequest *request = new network::HttpRequest();
-	request->setUrl("http://www.sonarlearning.co.uk/extras/cocostutorial/get.php");
+	request->setUrl("http://192.168.100.172:3000/api/users/1");
 	request->setRequestType(network::HttpRequest::Type::GET);
-	request->setResponseCallback(CC_CALLBACK_2(LoginScene::onRequestCompleted, this));
+	request->setResponseCallback(CC_CALLBACK_2(LoginScene::onLoginRequestCompleted, this));
 	network::HttpClient::getInstance()->send(request);
 	request->release();
 	return true;
 }
 
-void LoginScene::onRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
+void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
 
 	for (int i = 0; i < buffer->size(); i++){

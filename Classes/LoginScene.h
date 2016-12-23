@@ -12,5 +12,6 @@ class LoginScene: public Layer{
 		virtual bool init() override;
 		static Scene* createScene();
 		CREATE_FUNC(LoginScene);
-		void onRequestCompleted(network::HttpClient *sender, network::HttpResponse *response);
+		void onLoginRequestCompleted(network::HttpClient *sender, network::HttpResponse *response);
+		void onRegisterRequestCompleted(network::HttpClient *sender, network::HttpResponse *response);
 };
