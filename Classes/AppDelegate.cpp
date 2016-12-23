@@ -2,6 +2,7 @@
 #include "HomeScene.h"
 #include "Database.h"
 #include "LoginScene.h"
+#include "Constants.h"
 
 USING_NS_CC;
 
@@ -22,14 +23,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60);
-	bool is_first_startup = UserDefault::getInstance()->getBoolForKey("is_first_startup", true);
-	auto scene = NULL;
-	if(is_first_startup){
-		auto scene = LoginScene::createScene();
+	bool is_user_logged_in = UserDefault::getInstance()->getBoolForKey(Constants::is_user_logged_in);
+	if(is_user_logged_in){
+		auto scene = HomeScreen::createScene();
 		director->runWithScene(scene);
 	}
 	else{
-		auto scene = HomeScreen::createScene();
+		auto scene = LoginScene::createScene();
 		director->runWithScene(scene);
 	}
 

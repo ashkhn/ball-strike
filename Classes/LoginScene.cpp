@@ -1,6 +1,7 @@
 #include "LoginScene.h"
 #include "spine/Json.h"
 #include "ui/CocosGUI.h"
+#include "Constants.h"
 
 LoginScene::LoginScene(void){}
 
@@ -20,7 +21,7 @@ bool LoginScene::init(){
 		return false;
 	}
 
-	UserDefault::getInstance()->setBoolForKey("is_first_startup", false);
+	UserDefault::getInstance()->setBoolForKey(Constants::is_user_logged_in, true);
 
 	network::HttpRequest *request = new network::HttpRequest();
 	request->setUrl("http://192.168.100.172:3000/api/users/1");
