@@ -62,6 +62,8 @@ void LoginScene::initViews(){
 	login_btn->addTouchEventListener(CC_CALLBACK_2(LoginScene::loginUser,this));
 	register_btn->addTouchEventListener(CC_CALLBACK_2(LoginScene::registerUser, this));
 
+	status_label = ui::Text::create("", "fonts/Marker Felt.ttf", 60);
+
 
 	auto layout_param = ui::LinearLayoutParameter::create();
 	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
@@ -70,17 +72,20 @@ void LoginScene::initViews(){
 	password_field->setLayoutParameter(layout_param);
 	login_btn->setLayoutParameter(layout_param);
 	register_btn->setLayoutParameter(layout_param);
+	status_label->setLayoutParameter(layout_param);
 
 	container->addChild(email_field);
 	container->addChild(password_field);
 	container->addChild(login_btn);
 	container->addChild(register_btn);
+	container->addChild(status_label);
 
 }
 
 void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 	if (type == ui::Widget::TouchEventType::ENDED){
 		log("Starting login request");
+		status_label->setString("Loading..");
 		network::HttpRequest *login_req = new network::HttpRequest();
 		std::string login_url = Constants::api_base_url;
 		login_url += "api/sessions";
@@ -116,9 +121,13 @@ void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::H
 
 	if( 200 == response->getResponseCode() ){
 		log("Success");
+		status_label->setString("Successfully logged in");
+		status_label->setTextColor(Color4B::GREEN);
 	}
 	else{
 		log("Failure");
+		status_label->setTextColor(Color4B::RED);
+		status_label->setString("Failure");
 	}
 }
 

@@ -21,6 +21,7 @@ class LoginScene: public Layer{
 		ui::ScrollView* container;
 		ui::TextField* email_field;
 		ui::TextField* password_field;
+		ui::Text* status_label;
 		ui::Button* login_btn;
 		ui::Button* register_btn;
 		void initViews();
