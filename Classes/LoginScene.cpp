@@ -88,7 +88,7 @@ void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 		status_label->setString("Loading..");
 		network::HttpRequest *login_req = new network::HttpRequest();
 		std::string login_url = Constants::api_base_url;
-		login_url += "api/sessions";
+		login_url += "/sessions";
 		login_req->setUrl(login_url);
 		login_req->setRequestType(network::HttpRequest::Type::POST);
 		login_req->setResponseCallback(CC_CALLBACK_2(LoginScene::onLoginRequestCompleted, this));
@@ -101,6 +101,7 @@ void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 		login_req->setRequestData(post_data.c_str(), post_data.length());
 		login_req->setHeaders(headers);
 		login_btn->setEnabled(false);
+		register_btn->setEnabled(false);
 		network::HttpClient::getInstance()->send(login_req);
 		login_req->release();
 
@@ -108,16 +109,40 @@ void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 }
 
 void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
-	log("Register clicked");
+	if (type == ui::Widget::TouchEventType::ENDED){
+		log("Starting register request");
+		status_label->setString("Loading..");
+		network::HttpRequest *register_req = new network::HttpRequest();
+		std::string register_url = Constants::api_base_url;
+		register_url += "/users";
+		register_req->setUrl(register_url);
+		register_req->setRequestType(network::HttpRequest::Type::POST);
+		register_req->setResponseCallback(CC_CALLBACK_2(LoginScene::onRegisterRequestCompleted, this));
+		std::vector<std::string> headers;
+		headers.push_back("Content-Type:application/json; charset=utf-8");
+		std::string register_username = email_field->getString();
+		std::string register_password = password_field->getString();
+		std::string post_data = "{\"user\": {\"email\":\"" + register_username + "\",\"password\":\"" + register_password + "\"}}"; 
+		log("Posting data %s", post_data.c_str());
+		register_req->setRequestData(post_data.c_str(), post_data.length());
+		register_req->setHeaders(headers);
+		register_btn->setEnabled(false);
+		login_btn->setEnabled(false);
+		network::HttpClient::getInstance()->send(register_req);
+		register_req->release();
+
+	}
 }
 
 void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
-	login_btn->setEnabled(true);
 
-	for (int i = 0; i < buffer->size(); i++){
-		log("The response was %c", (*buffer)[i]);
-	}
+	std::string response_data(buffer->begin(), buffer->end());
+	log("Response data : %s", response_data.c_str());
+	login_btn->setEnabled(true);
+	register_btn->setEnabled(true);
+	//TODO redirect user to home screen after receiving auth token
+	
 
 	if( 200 == response->getResponseCode() ){
 		log("Success");
@@ -131,4 +156,21 @@ void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::H
 	}
 }
 
-void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){}
+void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
+	std::vector<char> *buffer = response->getResponseData();
+	std::string response_data(buffer->begin(), buffer->end());
+	login_btn->setEnabled(true);
+	register_btn->setEnabled(true);
+	
+	log("The response was %s", response_data.c_str());
+
+	if( 201 == response->getResponseCode() ){
+		log("User registered");
+		status_label->setString(" User registered.\n Please login using credentials");
+		status_label->setTextColor(Color4B::GREEN);
+	}else{
+		log("Failure");
+		status_label->setTextColor(Color4B::RED);
+		status_label->setString("Failure");
+	}
+}
