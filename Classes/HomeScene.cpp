@@ -1,6 +1,8 @@
 #include "HomeScene.h"
 #include "GameScene.h"
 #include "SettingsScene.h"
+#include "LoginScene.h"
+#include "Constants.h"
 
 
 HomeScreen::HomeScreen(void){}
@@ -40,7 +42,7 @@ bool HomeScreen::init(){
 /* Setup the menu. Checks if a save exists and enables the resume option based on it */
 void HomeScreen::initMenu(){
 
-	bool save_exists = UserDefault::getInstance()->getBoolForKey("save_exists");
+	bool save_exists = UserDefault::getInstance()->getBoolForKey(Constants::SAVE_EXISTS);
 	log("Save exists is %d", save_exists);
 
 	Menu *menu;
@@ -77,12 +79,12 @@ void HomeScreen::initMenu(){
 }
 
 void HomeScreen::startGameCallback(Ref* sender){
-	UserDefault::getInstance()->setBoolForKey("is_resumed", false);
+	UserDefault::getInstance()->setBoolForKey(Constants::IS_RESUMED, false);
 	Director::getInstance()->replaceScene(TransitionFade::create(1, Game::createScene()));
 }
 
 void HomeScreen::resumeGameCallback(Ref* sender){
-	UserDefault::getInstance()->setBoolForKey("is_resumed", true);
+	UserDefault::getInstance()->setBoolForKey(Constants::IS_RESUMED, true);
 	Director::getInstance()->replaceScene(TransitionFade::create(1, Game::createScene()));
 }
 

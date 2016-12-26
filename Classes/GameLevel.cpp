@@ -1,5 +1,6 @@
 #include "GameLevel.h"
 #include "Database.h"
+#include "Constants.h"
 
 /* Initialize the game level object with the screen size */
 GameLevel::GameLevel(Size screen_size){
@@ -149,7 +150,7 @@ void GameLevel::saveLevel(){
 		}
 
 		if(ball_state_saved && enemy_data_saved){
-			UserDefault::getInstance()->setBoolForKey("save_exists", true);
+			UserDefault::getInstance()->setBoolForKey(Constants::SAVE_EXISTS, true);
 			log("Game saved.");
 		}
 	}

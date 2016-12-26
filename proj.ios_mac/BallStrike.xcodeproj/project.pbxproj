@@ -23,6 +23,8 @@
 		383EC7901DDAE1A800B5586D /* EnemySprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC78B1DDAE1A800B5586D /* EnemySprite.cpp */; };
 		383EC7911DDAE1A800B5586D /* GameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 383EC78D1DDAE1A800B5586D /* GameLevel.cpp */; };
 		383EC7961DDAF49A00B5586D /* ball_sprites.png in Resources */ = {isa = PBXBuildFile; fileRef = 383EC7941DDAF49A00B5586D /* ball_sprites.png */; };
+		3861500F1E0CD01100680AFB /* LoginScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3861500D1E0CD01100680AFB /* LoginScene.cpp */; };
+		386150121E0D2A8300680AFB /* Constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 386150101E0D2A8300680AFB /* Constants.cpp */; };
 		386BD8601DDDBCD1006177F0 /* type_advantage.png in Resources */ = {isa = PBXBuildFile; fileRef = 386BD85F1DDDBCD1006177F0 /* type_advantage.png */; };
 		38A8AA931DD989F900044F45 /* HomeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A8AA911DD989F900044F45 /* HomeScene.cpp */; };
 		38A8AAA21DD98CE200044F45 /* ball_sprites.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AA971DD98CE200044F45 /* ball_sprites.png */; };
@@ -159,6 +161,10 @@
 		383EC78D1DDAE1A800B5586D /* GameLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameLevel.cpp; sourceTree = "<group>"; };
 		383EC78E1DDAE1A800B5586D /* GameLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLevel.h; sourceTree = "<group>"; };
 		383EC7941DDAF49A00B5586D /* ball_sprites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball_sprites.png; sourceTree = "<group>"; };
+		3861500D1E0CD01100680AFB /* LoginScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoginScene.cpp; sourceTree = "<group>"; };
+		3861500E1E0CD01100680AFB /* LoginScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginScene.h; sourceTree = "<group>"; };
+		386150101E0D2A8300680AFB /* Constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Constants.cpp; sourceTree = "<group>"; };
+		386150111E0D2A8300680AFB /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		386BD85F1DDDBCD1006177F0 /* type_advantage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = type_advantage.png; sourceTree = "<group>"; };
 		38A8AA911DD989F900044F45 /* HomeScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HomeScene.cpp; sourceTree = "<group>"; usesTabs = 1; };
 		38A8AA921DD989F900044F45 /* HomeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeScene.h; sourceTree = "<group>"; };
@@ -398,6 +404,10 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				386150101E0D2A8300680AFB /* Constants.cpp */,
+				386150111E0D2A8300680AFB /* Constants.h */,
+				3861500D1E0CD01100680AFB /* LoginScene.cpp */,
+				3861500E1E0CD01100680AFB /* LoginScene.h */,
 				3823322C1DDEE2DA00C05AFA /* SettingsScene.cpp */,
 				3823322D1DDEE2DA00C05AFA /* SettingsScene.h */,
 				38C764141DE41005007831C9 /* Database.cpp */,
@@ -645,7 +655,9 @@
 				383EC7901DDAE1A800B5586D /* EnemySprite.cpp in Sources */,
 				38A8AAB31DD9BFA700044F45 /* BallSprite.cpp in Sources */,
 				38A8AA931DD989F900044F45 /* HomeScene.cpp in Sources */,
+				386150121E0D2A8300680AFB /* Constants.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
+				3861500F1E0CD01100680AFB /* LoginScene.cpp in Sources */,
 				38A8AAB41DD9BFA700044F45 /* GameScene.cpp in Sources */,
 				38C764191DE41005007831C9 /* sqlite3.c in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
@@ -708,6 +720,7 @@
 				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../cocos2d/cocos/editor-support";
 				VALID_ARCHS = "arm64 armv7";
 			};
 			name = Debug;
@@ -739,6 +752,7 @@
 				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
 				VALID_ARCHS = "arm64 armv7";
 			};
 			name = Release;
