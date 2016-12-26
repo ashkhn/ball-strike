@@ -1,6 +1,8 @@
 #include "AppDelegate.h"
 #include "HomeScene.h"
 #include "Database.h"
+#include "LoginScene.h"
+#include "Constants.h"
 
 USING_NS_CC;
 
@@ -21,9 +23,16 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60);
+	bool is_user_logged_in = UserDefault::getInstance()->getBoolForKey(Constants::IS_USER_LOGGED_IN);
+	if(is_user_logged_in){
+		auto scene = HomeScreen::createScene();
+		director->runWithScene(scene);
+	}
+	else{
+		auto scene = LoginScene::createScene();
+		director->runWithScene(scene);
+	}
 
-	auto scene = HomeScreen::createScene();
-	director->runWithScene(scene);
 	// Create database tables
 	Database::open();
 	if (Database::createDataTables() && Database::createSaveTables()){
