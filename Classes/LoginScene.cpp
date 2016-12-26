@@ -2,6 +2,7 @@
 #include "Constants.h"
 #include "spine/Json.h"
 #include "HomeScene.h"
+#include "Database.h"
 
 LoginScene::LoginScene(void){}
 
@@ -136,6 +137,23 @@ void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
 	}
 }
 
+void LoginScene::fetchGameLevels(std::string auth_token){
+	log("Fetching game levels");
+	status_label->setString("Fetching game levels...");
+	network::HttpRequest *fetch_req = new network::HttpRequest();
+	std::string fetch_url = Constants::API_BASE_URL;
+	fetch_url += "/gamelevels";
+	fetch_req->setUrl(fetch_url);
+	fetch_req->setRequestType(network::HttpRequest::Type::GET);
+	fetch_req->setResponseCallback(CC_CALLBACK_2(LoginScene::onLevelFetchRequestCompleted, this));
+	std::vector<std::string> headers;
+	headers.push_back("Content-Type:application/json; charset=utf-8");
+	headers.push_back("Authorization:"+auth_token);
+	fetch_req->setHeaders(headers);
+	network::HttpClient::getInstance()->send(fetch_req);
+	fetch_req->release();
+}
+
 void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
 
@@ -148,25 +166,24 @@ void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::H
 		log("Success");
 		status_label->setString("Successfully logged in");
 		status_label->setTextColor(Color4B::GREEN);
-		UserDefault::getInstance()->setStringForKey(Constants::KEY_AUTH_TOKEN, Json_getString(json, Constants::KEY_AUTH_TOKEN, "error"));
+		std::string auth_token = Json_getString(json, Constants::KEY_AUTH_TOKEN, "error");
+		UserDefault::getInstance()->setStringForKey(Constants::KEY_AUTH_TOKEN, auth_token);
 		UserDefault::getInstance()->setBoolForKey(Constants::IS_USER_LOGGED_IN, true);
-		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
+		fetchGameLevels(auth_token);
 	}
 	else{
 		log("Failure");
 		status_label->setTextColor(Color4B::RED);
+		login_btn->setEnabled(true);
+		register_btn->setEnabled(true);
 		status_label->setString(Json_getString(json, Constants::KEY_ERRORS, "error"));
 	}
-	login_btn->setEnabled(true);
-	register_btn->setEnabled(true);
 
 }
 
 void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
 	std::string response_data(buffer->begin(), buffer->end());
-	login_btn->setEnabled(true);
-	register_btn->setEnabled(true);
 	
 	log("The response was %s", response_data.c_str());
 
@@ -179,5 +196,46 @@ void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network
 		log("Failure");
 		status_label->setTextColor(Color4B::RED);
 		status_label->setString("Invalid data");
+	}
+	login_btn->setEnabled(true);
+	register_btn->setEnabled(true);
+
+}
+
+void LoginScene::onLevelFetchRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
+	std::vector<char> *buffer = response->getResponseData();
+	std::string response_data(buffer->begin(), buffer->end());
+	log("The response was %s", response_data.c_str());
+	login_btn->setEnabled(true);
+	register_btn->setEnabled(true);
+
+	
+	if( 200 == response->getResponseCode() ){
+		Json* json = Json_create(response_data.c_str());
+		log("Success");
+		//TODO save game levels in db;
+		Json* level_content = json->child;
+		int i = 0;
+		bool insert_status = true;
+		while ( i < json->size ){
+			int num_enemies = Json_getInt(level_content, "num_enemies", -1);
+			int num_balls = Json_getInt(level_content, "num_balls", -1);
+			int num_hits_per_enemy  = Json_getInt(level_content, "num_hits_per_enemy", -1);
+			insert_status &= Database::createLevel(num_enemies, num_balls, num_hits_per_enemy);
+			i++;
+		}
+		if(insert_status){
+			status_label->setString("Game data updated.");
+			Director::getInstance()->replaceScene(TransitionFade::create(3.0f, HomeScreen::createScene()));
+		}else{
+			status_label->setTextColor(Color4B::RED);
+			status_label->setString("Error saving game data. Please login again");
+		}
+			
+	}
+	else{
+		log("Failure");
+		status_label->setTextColor(Color4B::RED);
+		status_label->setString("Error receiving game data. Please login again");
 	}
 }

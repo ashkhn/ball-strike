@@ -12,6 +12,8 @@ class Database {
 		static bool createDataTables();
 		static std::vector<std::vector<std::string>> getQueryResults(const char* query);
 		static bool createSaveTables();
+		static bool createLevelTables();
+		static bool createLevel(int num_enemies, int num_balls, int num_hits_per_enemy);
 
 	private:
 		Database();

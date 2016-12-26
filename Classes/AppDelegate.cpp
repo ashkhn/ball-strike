@@ -24,6 +24,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60);
 	bool is_user_logged_in = UserDefault::getInstance()->getBoolForKey(Constants::IS_USER_LOGGED_IN);
+	is_user_logged_in = false;
 	if(is_user_logged_in){
 		auto scene = HomeScreen::createScene();
 		director->runWithScene(scene);
@@ -35,7 +36,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	// Create database tables
 	Database::open();
-	if (Database::createDataTables() && Database::createSaveTables()){
+	if (Database::createDataTables() && Database::createSaveTables() && Database::createLevelTables()){
 		log("Tables created successfully");
 	}
 	return true;
