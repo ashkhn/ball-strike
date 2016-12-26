@@ -37,7 +37,7 @@ bool Game::init(){
 	
 	// Load the sprite frame cache
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("ball_sprites.plist");
-	bool is_resumed = UserDefault::getInstance()->getBoolForKey(Constants::is_resumed);
+	bool is_resumed = UserDefault::getInstance()->getBoolForKey(Constants::IS_RESUMED);
 
 	// Setup background
 	auto bg_sprite = Sprite::create("grass.png");

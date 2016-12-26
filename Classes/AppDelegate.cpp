@@ -23,8 +23,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60);
-	/* bool is_user_logged_in = UserDefault::getInstance()->getBoolForKey(Constants::is_user_logged_in); */
-	bool is_user_logged_in = false;
+	bool is_user_logged_in = UserDefault::getInstance()->getBoolForKey(Constants::IS_USER_LOGGED_IN);
 	if(is_user_logged_in){
 		auto scene = HomeScreen::createScene();
 		director->runWithScene(scene);

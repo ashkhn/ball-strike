@@ -150,7 +150,7 @@ void GameLevel::saveLevel(){
 		}
 
 		if(ball_state_saved && enemy_data_saved){
-			UserDefault::getInstance()->setBoolForKey(Constants::save_exists, true);
+			UserDefault::getInstance()->setBoolForKey(Constants::SAVE_EXISTS, true);
 			log("Game saved.");
 		}
 	}

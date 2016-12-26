@@ -1,5 +1,7 @@
 #include "LoginScene.h"
 #include "Constants.h"
+#include "spine/Json.h"
+#include "HomeScene.h"
 
 LoginScene::LoginScene(void){}
 
@@ -87,7 +89,7 @@ void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 		log("Starting login request");
 		status_label->setString("Loading..");
 		network::HttpRequest *login_req = new network::HttpRequest();
-		std::string login_url = Constants::api_base_url;
+		std::string login_url = Constants::API_BASE_URL;
 		login_url += "/sessions";
 		login_req->setUrl(login_url);
 		login_req->setRequestType(network::HttpRequest::Type::POST);
@@ -113,7 +115,7 @@ void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
 		log("Starting register request");
 		status_label->setString("Loading..");
 		network::HttpRequest *register_req = new network::HttpRequest();
-		std::string register_url = Constants::api_base_url;
+		std::string register_url = Constants::API_BASE_URL;
 		register_url += "/users";
 		register_req->setUrl(register_url);
 		register_req->setRequestType(network::HttpRequest::Type::POST);
@@ -139,21 +141,25 @@ void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::H
 
 	std::string response_data(buffer->begin(), buffer->end());
 	log("Response data : %s", response_data.c_str());
-	login_btn->setEnabled(true);
-	register_btn->setEnabled(true);
-	//TODO redirect user to home screen after receiving auth token
 	
 
+	Json *json = Json_create(response_data.c_str());
 	if( 200 == response->getResponseCode() ){
 		log("Success");
 		status_label->setString("Successfully logged in");
 		status_label->setTextColor(Color4B::GREEN);
+		UserDefault::getInstance()->setStringForKey(Constants::KEY_AUTH_TOKEN, Json_getString(json, Constants::KEY_AUTH_TOKEN, "error"));
+		UserDefault::getInstance()->setBoolForKey(Constants::IS_USER_LOGGED_IN, true);
+		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
 	}
 	else{
 		log("Failure");
 		status_label->setTextColor(Color4B::RED);
-		status_label->setString("Failure");
+		status_label->setString(Json_getString(json, Constants::KEY_ERRORS, "error"));
 	}
+	login_btn->setEnabled(true);
+	register_btn->setEnabled(true);
+
 }
 
 void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
@@ -168,9 +174,10 @@ void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network
 		log("User registered");
 		status_label->setString(" User registered.\n Please login using credentials");
 		status_label->setTextColor(Color4B::GREEN);
-	}else{
+	}
+	else{
 		log("Failure");
 		status_label->setTextColor(Color4B::RED);
-		status_label->setString("Failure");
+		status_label->setString("Invalid data");
 	}
 }
