@@ -47,6 +47,8 @@ void LoginScene::initViews(){
 	password_field = ui::TextField::create("","fonts/Marker Felt.ttf",60);
 	email_field->setPlaceHolder("Enter email");
 	password_field->setPlaceHolder("Enter password");
+	email_field->setPlaceHolderColor(Color3B::WHITE);
+	password_field->setPlaceHolderColor(Color3B::WHITE);
 	password_field->setPasswordEnabled(true);
 	
 	login_btn = ui::Button::create("button_normal.png", "button_pressed.png", "button_disabled.png");
@@ -77,15 +79,36 @@ void LoginScene::initViews(){
 }
 
 void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
+	if (type == ui::Widget::TouchEventType::ENDED){
+		log("Starting login request");
+		network::HttpRequest *login_req = new network::HttpRequest();
+		std::string login_url = Constants::api_base_url;
+		login_url += "api/sessions";
+		login_req->setUrl(login_url);
+		login_req->setRequestType(network::HttpRequest::Type::POST);
+		login_req->setResponseCallback(CC_CALLBACK_2(LoginScene::onLoginRequestCompleted, this));
+		std::vector<std::string> headers;
+		headers.push_back("Content-Type:application/json; charset=utf-8");
+		std::string login_username = email_field->getString();
+		std::string login_password = password_field->getString();
+		std::string post_data = "{\"email\":\"" + login_username + "\",\"password\":\"" + login_password + "\"}"; 
+		log("Posting data %s", post_data.c_str());
+		login_req->setRequestData(post_data.c_str(), post_data.length());
+		login_req->setHeaders(headers);
+		login_btn->setEnabled(false);
+		network::HttpClient::getInstance()->send(login_req);
+		login_req->release();
 
+	}
 }
 
 void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
-
+	log("Register clicked");
 }
 
 void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
+	login_btn->setEnabled(true);
 
 	for (int i = 0; i < buffer->size(); i++){
 		log("The response was %c", (*buffer)[i]);
