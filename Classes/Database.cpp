@@ -74,6 +74,20 @@ bool Database::createSaveTables(){
 	return ball_status && enemy_status;
 }
 
+/* creates the tables for storing game level information */
+/* @return true if tables were created successfully and false otherwise */
+bool Database::createLevelTables(){
+	std::string create_level_stmt = "create table if not exists game_levels(id integer primary key autoincrement, num_enemies integer, num_balls integer, num_hits_per_enemy integer)";
+	return execute(create_level_stmt);
+}
+
+bool Database::createLevel(int num_enemies, int num_balls, int num_hits_per_enemy){
+	std::string format_string = "insert into game_levels(num_enemies, num_balls, num_hits_per_enemy) values(%d, %d, %d)";
+	char insert_level_stmt[200];
+	sprintf(insert_level_stmt, format_string.c_str(), num_enemies, num_balls, num_hits_per_enemy);
+	return execute(insert_level_stmt);
+}
+
 /* Executes a query and returns the results. */ 
 /* Use it only for queries which return a result. For other queries use execute() instead. */
 /* @param query : SQL query to be executed */

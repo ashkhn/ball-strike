@@ -27,7 +27,9 @@ class LoginScene: public Layer{
 		void initViews();
 		void loginUser(Ref* sender, ui::Widget::TouchEventType type);
 		void registerUser(Ref* sender, ui::Widget::TouchEventType type);
+		void fetchGameLevels(std::string auth_token);
 		void onLoginRequestCompleted(network::HttpClient *sender, network::HttpResponse *response);
 		void onRegisterRequestCompleted(network::HttpClient *sender, network::HttpResponse *response);
+		void onLevelFetchRequestCompleted(network::HttpClient *sender, network::HttpResponse *response);
 
 };
