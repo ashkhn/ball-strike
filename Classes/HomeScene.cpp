@@ -5,9 +5,9 @@
 #include "Constants.h"
 
 
-HomeScreen::HomeScreen(void){}
+HomeScreen::HomeScreen(){}
 
-HomeScreen::~HomeScreen(void){}
+HomeScreen::~HomeScreen(){}
 
 
 Scene* HomeScreen::createScene(){

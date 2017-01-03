@@ -4,9 +4,9 @@
 #include "HomeScene.h"
 #include "Database.h"
 
-LoginScene::LoginScene(void){}
+LoginScene::LoginScene(){}
 
-LoginScene::~LoginScene(void){}
+LoginScene::~LoginScene(){}
 
 Scene* LoginScene::createScene(){
 	auto scene = Scene::create();
