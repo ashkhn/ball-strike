@@ -164,9 +164,10 @@ void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::H
 	Json *json = Json_create(response_data.c_str());
 	if( 200 == response->getResponseCode() ){
 		log("Success");
+		Json *user_json = Json_getItem(json, Constants::KEY_USER);
 		status_label->setString("Successfully logged in");
 		status_label->setTextColor(Color4B::GREEN);
-		std::string auth_token = Json_getString(json, Constants::KEY_AUTH_TOKEN, "error");
+		std::string auth_token = Json_getString(user_json, Constants::KEY_AUTH_TOKEN, "error");
 		UserDefault::getInstance()->setStringForKey(Constants::KEY_AUTH_TOKEN, auth_token);
 		UserDefault::getInstance()->setBoolForKey(Constants::IS_USER_LOGGED_IN, true);
 		fetchGameLevels(auth_token);
@@ -214,15 +215,18 @@ void LoginScene::onLevelFetchRequestCompleted(network::HttpClient *sender, netwo
 		Json* json = Json_create(response_data.c_str());
 		log("Success");
 		//TODO save game levels in db;
-		Json* level_content = json->child;
+		Json* level_json = Json_getItem(json, Constants::KEY_GAMELEVELS);
+		Json* level_content = level_json->child;
 		int i = 0;
 		bool insert_status = true;
-		while ( i < json->size ){
+		while ( i < level_json->size ){
 			int num_enemies = Json_getInt(level_content, "num_enemies", -1);
 			int num_balls = Json_getInt(level_content, "num_balls", -1);
 			int num_hits_per_enemy  = Json_getInt(level_content, "num_hits_per_enemy", -1);
+			log("The level details for index %d are %d, %d, %d", i, num_enemies, num_balls, num_hits_per_enemy);
 			insert_status &= Database::createLevel(num_enemies, num_balls, num_hits_per_enemy);
 			i++;
+			level_content = level_content->next;
 		}
 		if(insert_status){
 			status_label->setString("Game data updated.");

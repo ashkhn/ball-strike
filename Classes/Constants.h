@@ -9,6 +9,8 @@ class Constants {
 		
 		static const char* API_BASE_URL;
 
+		static const char* KEY_USER;
+		static const char* KEY_GAMELEVELS;
 		static const char* KEY_AUTH_TOKEN;
 		static const char* KEY_USER_EMAIL;
 		static const char* KEY_USER_CURRENT_LEVEL;
