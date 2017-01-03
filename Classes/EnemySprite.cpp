@@ -1,8 +1,8 @@
 #include "EnemySprite.h"
 
-EnemySprite::EnemySprite(void){}
+EnemySprite::EnemySprite(){}
 
-EnemySprite::~EnemySprite(void){}
+EnemySprite::~EnemySprite(){}
 
 const std::string EnemySprite::sprite_paths[] = {"goku.png", "vegeta.png"};
 

@@ -5,9 +5,9 @@
 USING_NS_CC;
 
 
-Game::Game(void){}
+Game::Game(){}
 
-Game::~Game(void){}
+Game::~Game(){}
 
 Scene* Game::createScene(){
 	// 'scene' is an autorelease object

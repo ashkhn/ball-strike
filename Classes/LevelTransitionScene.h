@@ -11,7 +11,7 @@ class LevelTransitionScene: public Layer {
 	public:
 		LevelTransitionScene();
 		virtual ~LevelTransitionScene();
-		static Scene* createScene(int reason);
+		static Scene* createScene();
 		virtual bool init() override;
 		CREATE_FUNC(LevelTransitionScene);
 		ui::Text* status_label;
@@ -19,5 +19,5 @@ class LevelTransitionScene: public Layer {
 		void updateCurrentLevel(int new_level_id);
 		void onFetchCurrentLevelCompleted(network::HttpClient *sender, network::HttpResponse *response);
 		void onUpdateCurrentLevelCompleted(network::HttpClient *sender, network::HttpResponse *response);
-
+	
 };

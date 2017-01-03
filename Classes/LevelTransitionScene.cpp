@@ -3,7 +3,7 @@
 LevelTransitionScene::LevelTransitionScene(){}
 LevelTransitionScene::~LevelTransitionScene(){}
 
-Scene* LevelTransitionScene::createScene(int reason){
+Scene* LevelTransitionScene::createScene(){
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
 	

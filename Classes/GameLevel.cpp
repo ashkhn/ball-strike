@@ -7,7 +7,7 @@ GameLevel::GameLevel(Size screen_size){
 	this->_screen_size = screen_size;
 }
 
-GameLevel::~GameLevel(void){}
+GameLevel::~GameLevel(){}
 
 /* Generate a new game level */
 void GameLevel::initLevel(){

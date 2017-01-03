@@ -1,10 +1,10 @@
 #include "BallSprite.h"
 
-BallSprite::BallSprite(void){
+BallSprite::BallSprite(){
 	_velocity = Vec2(0, 0); //Initial velocity is zero
 }
 
-BallSprite::~BallSprite(void){}
+BallSprite::~BallSprite(){}
 
 const std::string BallSprite::sprite_paths[] = {"blue_ball", "green_ball", "purple_ball", "orange_ball", "red_ball"};
 
