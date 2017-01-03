@@ -5,6 +5,11 @@ const char* Constants::SAVE_EXISTS = "save_exists";
 const char* Constants::IS_RESUMED = "is_resumed";
 const char* Constants::API_BASE_URL = "https://ballstrike-api.herokuapp.com/api";
 
+const char* Constants::LEVEL_REASON = "level_reason";
+const char* Constants::REASON_NEW_GAME = "new_game";
+const char* Constants::REASON_RESUME_GAME = "resume_game";
+const char* Constants::REASON_LEVEL_FINISH = "level_finish";
+
 
 // Json keys
 const char* Constants::KEY_USER = "user";

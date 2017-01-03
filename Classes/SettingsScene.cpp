@@ -48,7 +48,7 @@ void SettingsScene::handleBack(EventKeyboard::KeyCode key_code, Event* event){
 
 /* Initialize the settings screen */
 void SettingsScene::initOptions(){
-	_screen_size = Director::getInstance()->getVisibleSize();
+	_screen_size = Director::getInstance()->getWinSizeInPixels();
 	container = ui::ScrollView::create();
 	container->setPosition(Point(15, 5));
 	container->setContentSize(Size(_screen_size.width - 30.0f, _screen_size.height - 30.0f));

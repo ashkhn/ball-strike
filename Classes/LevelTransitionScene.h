@@ -14,6 +14,7 @@ class LevelTransitionScene: public Layer {
 		static Scene* createScene();
 		virtual bool init() override;
 		CREATE_FUNC(LevelTransitionScene);
+		Size _screen_size;
 		ui::Text* status_label;
 		void getCurrentLevel();
 		void updateCurrentLevel(int new_level_id);
