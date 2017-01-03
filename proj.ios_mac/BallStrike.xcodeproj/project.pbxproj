@@ -45,6 +45,7 @@
 		38A8AAB91DD9BFFB00044F45 /* goku.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AAB61DD9BFFB00044F45 /* goku.png */; };
 		38A8AABA1DD9BFFB00044F45 /* vegeta.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A8AAB71DD9BFFB00044F45 /* vegeta.png */; };
 		38A9C44F1DDC0AA900E1E479 /* red_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A9C44E1DDC0AA900E1E479 /* red_arrow.png */; };
+		38B5D9531E1B3B8E009C3EF1 /* LevelTransitionScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38B5D9511E1B3B8E009C3EF1 /* LevelTransitionScene.cpp */; };
 		38C7640E1DE3F65C007831C9 /* button_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C7640B1DE3F65C007831C9 /* button_disabled.png */; };
 		38C7640F1DE3F65C007831C9 /* button_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C7640C1DE3F65C007831C9 /* button_normal.png */; };
 		38C764101DE3F65C007831C9 /* button_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C7640D1DE3F65C007831C9 /* button_pressed.png */; };
@@ -188,6 +189,8 @@
 		38A8AAB61DD9BFFB00044F45 /* goku.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goku.png; sourceTree = "<group>"; };
 		38A8AAB71DD9BFFB00044F45 /* vegeta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vegeta.png; sourceTree = "<group>"; };
 		38A9C44E1DDC0AA900E1E479 /* red_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_arrow.png; sourceTree = "<group>"; };
+		38B5D9511E1B3B8E009C3EF1 /* LevelTransitionScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelTransitionScene.cpp; sourceTree = "<group>"; };
+		38B5D9521E1B3B8E009C3EF1 /* LevelTransitionScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelTransitionScene.h; sourceTree = "<group>"; };
 		38C7640B1DE3F65C007831C9 /* button_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_disabled.png; sourceTree = "<group>"; };
 		38C7640C1DE3F65C007831C9 /* button_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_normal.png; sourceTree = "<group>"; };
 		38C7640D1DE3F65C007831C9 /* button_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_pressed.png; sourceTree = "<group>"; };
@@ -404,6 +407,8 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				38B5D9511E1B3B8E009C3EF1 /* LevelTransitionScene.cpp */,
+				38B5D9521E1B3B8E009C3EF1 /* LevelTransitionScene.h */,
 				386150101E0D2A8300680AFB /* Constants.cpp */,
 				386150111E0D2A8300680AFB /* Constants.h */,
 				3861500D1E0CD01100680AFB /* LoginScene.cpp */,
@@ -658,6 +663,7 @@
 				386150121E0D2A8300680AFB /* Constants.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				3861500F1E0CD01100680AFB /* LoginScene.cpp in Sources */,
+				38B5D9531E1B3B8E009C3EF1 /* LevelTransitionScene.cpp in Sources */,
 				38A8AAB41DD9BFA700044F45 /* GameScene.cpp in Sources */,
 				38C764191DE41005007831C9 /* sqlite3.c in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
