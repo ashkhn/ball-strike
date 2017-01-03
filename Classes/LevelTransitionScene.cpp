@@ -34,6 +34,7 @@ bool LevelTransitionScene::init(){
 	return true;
 }
 
+/* Defines what action should be taken based on where this Scene was opened from */
 void LevelTransitionScene::chooseAction(){
 	if(level_reason == Constants::REASON_LEVEL_FINISH){
 		log("Level finished..");
@@ -51,17 +52,22 @@ void LevelTransitionScene::chooseAction(){
 
 }
 
+/* Start a new level based on current level of user */
 void LevelTransitionScene::startNewGame(){
 	UserDefault::getInstance()->setBoolForKey(Constants::IS_RESUMED, false);
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::createScene()));
 }
 
+/* Resume a previously saved game */
 void LevelTransitionScene::resumeGame(){
 	UserDefault::getInstance()->setBoolForKey(Constants::IS_RESUMED, true);
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::createScene()));
 }
 
 
+/* Fetch the current level of user from the api server */
+/* Equivalent curl request: curl -H 'Content-Type:application/json; charset=utf-8' -H 'Authorization:{@auth_token}' API_BASE_URL/users/{@user_id} */
+/* where @auth_token : Auth token of the user, @user_id: Id of the user */
 void LevelTransitionScene::fetchCurrentLevel(){
 	network::HttpRequest* fetch_level_req = new network::HttpRequest();
 	int user_id = UserDefault::getInstance()->getIntegerForKey(Constants::KEY_USER_ID, -1);
@@ -81,6 +87,9 @@ void LevelTransitionScene::fetchCurrentLevel(){
 }
 
 
+/* Called when the request to fetch levels is completed */
+/* @param sender : HttpClient used for making the request */
+/* @param response: HttpResponse object containing the response of the request */
 void LevelTransitionScene::onFetchCurrentLevelCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
 	std::string response_data(buffer->begin(), buffer->end());
@@ -101,6 +110,11 @@ void LevelTransitionScene::onFetchCurrentLevelCompleted(network::HttpClient *sen
 }
 
 
+/* Sends a PUT request to server update the current level of the user */
+/* @param new_level_id : The new level of the user to be updated */
+/* Equivalent curl request: curl -x PUT -H 'Content-Type:application/json; charset= utf-8' \ */
+/* -H 'Authorization:@auth_token' -d '{"user":{"current_level_id": @level_id}}' API_BASE_URL/users/{@user_id} */
+/* where @auth_token: Auth Token of the user, @level_id: New level id for user, @user_id: Id of user */
 void LevelTransitionScene::updateCurrentLevel(int new_level_id){
 	network::HttpRequest* update_level_req = new network::HttpRequest();
 	std::string auth_token = UserDefault::getInstance()->getStringForKey(Constants::KEY_AUTH_TOKEN, "");
@@ -121,6 +135,10 @@ void LevelTransitionScene::updateCurrentLevel(int new_level_id){
 
 }
 
+
+/* Called when the request to update current level of user is completed */
+/* @param sender : HttpClient used for making the request */
+/* @param response: HttpResponse object containing the response of the request */
 void LevelTransitionScene::onUpdateCurrentLevelCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
 	std::string response_data(buffer->begin(), buffer->end());

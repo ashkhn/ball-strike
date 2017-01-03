@@ -5,6 +5,9 @@
 #include "spine/Json.h"
 #include "ui/CocosGUI.h"
 #include "Constants.h"
+#include "HomeScene.h"
+#include "Database.h"
+
 
 USING_NS_CC;
 
