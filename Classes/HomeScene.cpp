@@ -25,7 +25,7 @@ bool HomeScreen::init(){
 		return false;
 	}
 	
-	_screen_size = Director::getInstance()->getVisibleSize();
+	_screen_size = Director::getInstance()->getWinSizeInPixels();
 
 	// Set the background
 	auto bg_sprite = Sprite::create("grass.png");

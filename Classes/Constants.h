@@ -3,9 +3,14 @@
 
 class Constants {
 	public:
+		static const char* LEVEL_REASON;
+		static const char* REASON_NEW_GAME;
+		static const char* REASON_RESUME_GAME;
+		static const char* REASON_LEVEL_FINISH;
 		static const char* IS_USER_LOGGED_IN;
 		static const char* SAVE_EXISTS;
 		static const char* IS_RESUMED;
+
 		
 		static const char* API_BASE_URL;
 

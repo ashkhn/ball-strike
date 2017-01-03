@@ -24,6 +24,8 @@ bool LevelTransitionScene::init(){
 		return false;
 	}
 
+	status_label = ui::Text::create();
+	
 	return true;
 }
 
