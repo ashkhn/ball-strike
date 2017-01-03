@@ -59,7 +59,10 @@ bool Game::init(){
 
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
-
+	
+	log("Game level started");
+	std::string level_action = UserDefault::getInstance()->getStringForKey(Constants::LEVEL_REASON, "");
+	log("Level action is %s", level_action.c_str());
 	generateLevel(is_resumed);
 	this->scheduleUpdate();
 
@@ -76,8 +79,10 @@ void Game::handleBack(EventKeyboard::KeyCode key_code, Event* event){
 /* @param is_resumed : Defines whether a new level is to be generated or an old level needs to be resumed */
 void Game::generateLevel(bool is_resumed){
 
+	
 	game_level = new GameLevel(_screen_size);
 	if(is_resumed){
+		log("level resume called");
 		game_level->resumeLevel();
 	}else{
 		game_level->initLevel();
@@ -146,8 +151,7 @@ void Game::onTouchMoved(Touch* touch, Event* event){
 /* Called when the user finger leaves the screen */
 /* Checks if a ball was selected and imparts a velocity to the ball */
 void Game::onTouchEnded(Touch* touch, Event* event){
-	//TODO calculate the velocity vector and move the ball
-	log("touch end called");
+	/* log("touch end called"); */
 	game_level->arrow->runAction(RemoveSelf::create());
 	if (touch != nullptr){
 		auto tap = touch->getLocation();
@@ -165,6 +169,22 @@ void Game::onTouchEnded(Touch* touch, Event* event){
 /* Checks every ball and updates their positions and velocities */ 
 /* Also handles collisions with other balls and enemies */
 void Game::update(float dt){
+
+	//Check if all enemies are killed
+	bool is_level_complete = true;
+	for (auto enemy : game_level->enemies){
+		if(enemy->hits_left > 0){
+			is_level_complete = false;
+		}
+	}
+
+	if(is_level_complete){
+		log("level completed");
+		this->unscheduleUpdate();
+		UserDefault::getInstance()->setStringForKey(Constants::LEVEL_REASON, Constants::REASON_LEVEL_FINISH);
+		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, LevelTransitionScene::createScene()));
+	}
+
 	for (auto ball : game_level->attack_balls){
 		if (ball->getVelocity() != Vec2(0,0)){
 			auto ball_velocity = ball->getVelocity();
@@ -232,7 +252,7 @@ void Game::update(float dt){
 				if (dist_vec.lengthSquared() <= sum_radii || future_dist_vec.lengthSquared() <= sum_radii){
 					if (enemy->current_hits < enemy->max_hits){
 						enemy->getHit();
-						log("Enemy collision about to happen");
+						/* log("Enemy collision about to happen"); */
 						auto collision_axis = dist_vec;
 						float ball_vel_mag = ball_velocity.length();
 						float alpha = getAngle(ball_velocity, collision_axis);

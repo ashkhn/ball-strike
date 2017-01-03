@@ -2,6 +2,7 @@
 
 #include "cocos2d.h"
 #include "GameLevel.h"
+#include "LevelTransitionScene.h"
 
 USING_NS_CC;
 
