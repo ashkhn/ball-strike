@@ -22,4 +22,7 @@ class Constants {
 		static const char* KEY_USER_CURRENT_LEVEL;
 		static const char* KEY_ERRORS;
 
+
+		static const int NUM_CLASSES;
+		static const int NUM_SPRITES_PER_CLASS;
 };

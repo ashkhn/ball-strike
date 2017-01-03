@@ -68,6 +68,7 @@ void GameLevel::resumeLevel(){
 	enemies.clear();
 	loadValues();
 	
+	/* Load ball data */
 	std::string ball_query_stmt = "select * from ball_save_data";
 	std::vector<std::vector<std::string>> ball_results = Database::getQueryResults(ball_query_stmt.c_str());
 	log("Number of ball results is %lu", ball_results.size());
@@ -83,6 +84,7 @@ void GameLevel::resumeLevel(){
 		attack_balls.push_back(ball_sprite);
 	}
 
+	/* Load enemy data */
 	std::string enemy_query_stmt = "select * from enemy_save_data";
 	std::vector<std::vector<std::string>> enemy_results = Database::getQueryResults(enemy_query_stmt.c_str());
 	for(int i = 0; i < enemy_results.size(); i++){
@@ -102,6 +104,7 @@ void GameLevel::resumeLevel(){
 
 }
 
+/* Load game level parameters from database */
 void GameLevel::loadValues(){
 	std::string format_string = "select * from game_levels where id = %d";
 	char query_stmt[100];
@@ -114,6 +117,7 @@ void GameLevel::loadValues(){
 }
 
 
+/* Save level details in database so that game can be resumed later */
 void GameLevel::saveLevel(){
 	log("Save level called");
 	std::string flush_ball_query = "delete from ball_save_data";
@@ -122,7 +126,7 @@ void GameLevel::saveLevel(){
 	bool flush_status = Database::execute(flush_ball_query) && Database::execute(flush_enemy_query);
 	
 	if(flush_status){
-		//Save ball data
+		/* Save ball data */
 		bool ball_state_saved = true;
 		for(auto ball : attack_balls){
 			std::string insert_ball_format = "insert into ball_save_data(ball_class, posn_x, posn_y) values(%d, %f, %f)";
@@ -134,7 +138,7 @@ void GameLevel::saveLevel(){
 			ball_state_saved &= Database::execute(insert_ball_stmt);
 		}
 		
-		//Save enemy data
+		/* Save enemy data */
 		bool enemy_data_saved = true;
 		for(auto enemy : enemies){
 			std::string insert_enemy_format = "insert into enemy_save_data(enemy_class, hits_left, posn_x, posn_y) values(%d, %d, %f, %f)";

@@ -1,9 +1,4 @@
 #include "HomeScene.h"
-#include "SettingsScene.h"
-#include "LoginScene.h"
-#include "Constants.h"
-#include "LevelTransitionScene.h"
-
 
 HomeScreen::HomeScreen(){}
 

@@ -1,10 +1,8 @@
 #pragma once
 #include "cocos2d.h"
+#include "Constants.h"
 
 USING_NS_CC;
-
-#define NUM_CLASSES 5 // Number of classes for the ball
-#define NUM_SPRITES_PER_CLASS 2 // Number of sprite image files available for each class
 
 enum class Color{
 	BLUE,

@@ -79,7 +79,6 @@ void Game::handleBack(EventKeyboard::KeyCode key_code, Event* event){
 /* @param is_resumed : Defines whether a new level is to be generated or an old level needs to be resumed */
 void Game::generateLevel(bool is_resumed){
 
-	
 	game_level = new GameLevel(_screen_size);
 	if(is_resumed){
 		log("level resume called");
@@ -88,13 +87,7 @@ void Game::generateLevel(bool is_resumed){
 		game_level->initLevel();
 	}
 
-	auto adv_sprite = Sprite::create("type_advantage.png");
-	adv_sprite->setScale(2);
-	auto sprite_h = adv_sprite->getBoundingBox().size.height / 2;
-	auto sprite_w = adv_sprite->getBoundingBox().size.width / 2;
-	adv_sprite->setPosition(Vec2(_screen_size.width - sprite_w, _screen_size.height - sprite_h ));
-	this->addChild(adv_sprite, 2);
-
+	
 	for (auto ball: game_level->attack_balls){
 		this->addChild(ball);
 	}
@@ -170,10 +163,11 @@ void Game::onTouchEnded(Touch* touch, Event* event){
 /* Also handles collisions with other balls and enemies */
 void Game::update(float dt){
 
-	//Check if all enemies are killed
+	/* Check if all enemies are killed */
+	//TODO replace with boolean condition check
 	bool is_level_complete = true;
 	for (auto enemy : game_level->enemies){
-		if(enemy->hits_left > 0){
+		if(enemy->current_hits == enemy->max_hits){
 			is_level_complete = false;
 		}
 	}
@@ -185,6 +179,7 @@ void Game::update(float dt){
 		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, LevelTransitionScene::createScene()));
 	}
 
+	/* Handle collisions */
 	for (auto ball : game_level->attack_balls){
 		if (ball->getVelocity() != Vec2(0,0)){
 			auto ball_velocity = ball->getVelocity();
@@ -194,29 +189,29 @@ void Game::update(float dt){
 			ball_next_posn.x += step_x;
 			ball_next_posn.y += step_y;
 
-			//Check for collision with the walls;
+			/* Check for collision with the walls; */
 			
-			//Left side
+			/* Left side */
 			if (ball_next_posn.x < ball->radius()){
 				ball_next_posn.x = ball->radius();
 				ball_velocity.x *= -RESTITUTION_COEFF;  // Perfect collision so no loss in velocity
 			}
-			//Right side
+			/* Right side */
 			if (ball_next_posn.x > _screen_size.width - ball->radius()){
 				ball_next_posn.x = _screen_size.width - ball->radius();
 				ball_velocity.x *= -RESTITUTION_COEFF;
 			}
-			//Top side
+			/* Top side */
 			if (ball_next_posn.y > _screen_size.height - ball->radius()){
 				ball_next_posn.y = _screen_size.height - ball->radius();
 				ball_velocity.y *= -RESTITUTION_COEFF;
 			}
-			// Bottom side
+			/* Bottom side */
 			if (ball_next_posn.y < ball->radius()){
 				ball_next_posn.y = ball->radius();
 				ball_velocity.y *= -RESTITUTION_COEFF;
 			}
-			//check for collision with other balls;
+			/* check for collision with other balls; */
 			for (auto other_ball : game_level->attack_balls){
 				if (other_ball-> id != ball->id){
 					auto dist_vec = other_ball->getPosition() - ball->getPosition();
@@ -228,11 +223,11 @@ void Game::update(float dt){
 						float ball_vel_mag = ball_velocity.length();
 						float other_vel_mag = other_ball->getVelocity().length();
 						
-						//Calculate angles
+						/* Calculate angles */
 						float alpha = getAngle(ball_velocity, collision_axis);
 						float beta = getAngle(other_ball->getVelocity(), collision_axis);
 						float phi = getAngle(collision_axis, Vec2(0,0));
-						// Update ball velocities
+						 /* Update ball velocities */
 						ball_velocity.x = other_vel_mag * std::cos(beta) * std::cos(phi) - ball_vel_mag * std::sin(alpha) * std::sin(phi);
 						ball_velocity.y = other_vel_mag * std::cos(beta) * std::sin(phi) + ball_vel_mag * std::sin(alpha) * std::cos(phi);
 						auto other_vel_x = ball_vel_mag * std::cos(alpha) * std::cos(phi) - other_vel_mag * std::sin(beta) * std::sin(phi);
@@ -244,7 +239,7 @@ void Game::update(float dt){
 				}
 			}
 
-			//check for colllisions with enemy
+			/* check for collisions with enemy */
 			for (auto enemy : game_level->enemies){
 				auto dist_vec = enemy->sprite->getPosition() - ball->getPosition();
 				auto future_dist_vec = enemy->sprite->getPosition() - ball_next_posn;
@@ -272,13 +267,13 @@ void Game::update(float dt){
 			}
 
 			ball_velocity *= BALL_DECELERATION;
-			// If velocity goes below threshold then stop the ball
+			/* If velocity goes below threshold then stop the ball */
 			if (ball_velocity.lengthSquared() < VELOCITY_THRESHOLD){
 				ball_velocity = Vec2(0, 0);
 				ball->setTouch(nullptr);
 				game_level->is_busy = false;
 			}
-			// Update ball velocity and position
+			/* Update ball velocity and position */
 			ball->setVelocity(ball_velocity);
 			ball->setNextPosition(ball_next_posn);
 			ball->setPosition(ball->getNextPosition());

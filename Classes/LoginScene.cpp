@@ -1,8 +1,5 @@
 #include "LoginScene.h"
-#include "Constants.h"
-#include "spine/Json.h"
-#include "HomeScene.h"
-#include "Database.h"
+
 
 LoginScene::LoginScene(){}
 
@@ -38,14 +35,19 @@ bool LoginScene::init(){
 	return true;
 }
 
+/* Initialize the layout */
 void LoginScene::initViews(){
+
+	/* Set container parameters */
 	container = ui::ScrollView::create();
 	container->setPosition(Point(0,0));
 	container->setContentSize(Size(_screen_size.width - 30.0f, _screen_size.height - 30.0f));
 	container->setDirection(ui::ScrollView::Direction::VERTICAL);
 	container->setInnerContainerSize(_screen_size);
 	container->setLayoutType(ui::Layout::Type::VERTICAL);
-	
+
+
+	/* Initialize text fields */
 	email_field = ui::TextField::create("","fonts/Marker Felt.ttf", 60);
 	password_field = ui::TextField::create("","fonts/Marker Felt.ttf",60);
 	email_field->setPlaceHolder("Enter email");
@@ -54,6 +56,7 @@ void LoginScene::initViews(){
 	password_field->setPlaceHolderColor(Color3B::WHITE);
 	password_field->setPasswordEnabled(true);
 	
+	/* Initialize buttons */
 	login_btn = ui::Button::create("button_normal.png", "button_pressed.png", "button_disabled.png");
 	register_btn = ui::Button::create("button_normal.png", "button_pressed.png", "button_disabled.png");
 	login_btn->setTitleText("Login");
@@ -68,6 +71,7 @@ void LoginScene::initViews(){
 	status_label = ui::Text::create("", "fonts/Marker Felt.ttf", 60);
 
 
+	/* Set layout parameters */
 	auto layout_param = ui::LinearLayoutParameter::create();
 	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
 	layout_param->setMargin(ui::Margin(0, 175, 175, 75));
@@ -85,6 +89,13 @@ void LoginScene::initViews(){
 
 }
 
+/* Called when login button is touched */
+/* @param sender: Reference to widget through which this method was called */
+/* @param type: Type of touch event which occurred */
+/* Makes a login request to the api server */
+/* Equivalent curl command: curl -X POST -H 'Content-Type: application/json; charset=utf-8' \ */
+/* 			   -d {"email": @login_email, "password": @login_password} API_BASE_URL/sessions */
+/* where @login_email: Email id used to login , @login_password: Password used for login */
 void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 	if (type == ui::Widget::TouchEventType::ENDED){
 		log("Starting login request");
@@ -111,6 +122,13 @@ void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 	}
 }
 
+/* Called when register button is touched */
+/* @param sender: Reference to widget through which this method was called */
+/* @param type: Type of touch event which occurred */
+/* Makes a register request to the api server */
+/* Equivalent curl command: curl -X POST -H 'Content-Type: application/json; charset=utf-8' \ */
+/* 			   -d {"email": @register_email, "password": @register_password} API_BASE_URL/users */
+/* where @register_email: Email id used to register , @register_password: Password used for register */
 void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
 	if (type == ui::Widget::TouchEventType::ENDED){
 		log("Starting register request");
@@ -137,6 +155,9 @@ void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
 	}
 }
 
+/* Fetch the list of game levels from api server */
+/* Equivalent curl request : curl -H 'Content-Type: application/json; charset=utf-8' -H 'Authorization:@auth_token' API_BASE_URL/gamelevels */
+/* @param auth_token: Auth token for the user */
 void LoginScene::fetchGameLevels(std::string auth_token){
 	log("Fetching game levels");
 	status_label->setString("Fetching game levels...");
@@ -153,6 +174,11 @@ void LoginScene::fetchGameLevels(std::string auth_token){
 	network::HttpClient::getInstance()->send(fetch_req);
 	fetch_req->release();
 }
+
+
+/* Called when the request to login user is completed */
+/* @param sender : HttpClient used for making the request */
+/* @param response: HttpResponse object containing the response of the request */
 
 void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
@@ -186,6 +212,10 @@ void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::H
 
 }
 
+
+/* Called when the request to register user is completed */
+/* @param sender : HttpClient used for making the request */
+/* @param response: HttpResponse object containing the response of the request */
 void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
 	std::string response_data(buffer->begin(), buffer->end());
@@ -207,6 +237,10 @@ void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network
 
 }
 
+
+/* Called when the request to fetch game levels is completed */
+/* @param sender : HttpClient used for making the request */
+/* @param response: HttpResponse object containing the response of the request */
 void LoginScene::onLevelFetchRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
 	std::string response_data(buffer->begin(), buffer->end());
