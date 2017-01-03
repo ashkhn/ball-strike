@@ -168,8 +168,12 @@ void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::H
 		status_label->setString("Successfully logged in");
 		status_label->setTextColor(Color4B::GREEN);
 		std::string auth_token = Json_getString(user_json, Constants::KEY_AUTH_TOKEN, "error");
+		int current_level = Json_getInt(user_json, Constants::KEY_USER_CURRENT_LEVEL, -1);
+		int user_id = Json_getInt(user_json, Constants::KEY_USER_ID, -1);
 		UserDefault::getInstance()->setStringForKey(Constants::KEY_AUTH_TOKEN, auth_token);
 		UserDefault::getInstance()->setBoolForKey(Constants::IS_USER_LOGGED_IN, true);
+		UserDefault::getInstance()->setIntegerForKey(Constants::KEY_USER_CURRENT_LEVEL, current_level);
+		UserDefault::getInstance()->setIntegerForKey(Constants::KEY_USER_ID, user_id);
 		fetchGameLevels(auth_token);
 	}
 	else{

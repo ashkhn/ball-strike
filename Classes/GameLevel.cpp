@@ -1,6 +1,4 @@
 #include "GameLevel.h"
-#include "Database.h"
-#include "Constants.h"
 
 /* Initialize the game level object with the screen size */
 GameLevel::GameLevel(Size screen_size){
@@ -37,14 +35,13 @@ void GameLevel::initLevel(){
 				position = Vec2(rand_x, rand_y);
 			}
 		}
-		new_ball->setScale(ball_scale);
 		new_ball->setPosition(position);
 		attack_balls.push_back(new_ball);
 	}
 
 	// Generate enemies
 	for (int  i = 0; i < num_enemies; i++){
-		auto enemy = new Enemy(20);
+		auto enemy = new Enemy(num_hits_per_enemy);
 		min_x = enemy->sprite->width();
 		min_y = enemy->sprite->height();
 		max_x = _screen_size.width - min_x;
@@ -80,9 +77,8 @@ void GameLevel::resumeLevel(){
 		auto ball_sprite = BallSprite::gameSpriteWithFile(BallSprite::sprite_paths[ball_color]);
 		ball_sprite->id = std::stoi(curr_ball_values[0]);
 		ball_sprite->color = static_cast<Color> (ball_color);
-		ball_sprite->setScale(std::stof(curr_ball_values[2]));
-		auto posn_x = std::stof(curr_ball_values[3]);
-		auto posn_y = std::stof(curr_ball_values[4]);
+		auto posn_x = std::stof(curr_ball_values[2]);
+		auto posn_y = std::stof(curr_ball_values[3]);
 		ball_sprite->setPosition(Vec2(posn_x, posn_y));
 		attack_balls.push_back(ball_sprite);
 	}
@@ -107,11 +103,14 @@ void GameLevel::resumeLevel(){
 }
 
 void GameLevel::loadValues(){
-	std::string query_stmt = "select * from game_data";
-	std::vector<std::vector<std::string>> results = Database::getQueryResults(query_stmt.c_str());
-	num_enemies = std::stoi(results[0][0]);
-	num_balls = std::stoi(results[0][1]);
-	ball_scale = std::stof(results[0][2]);
+	std::string format_string = "select * from game_levels where id = %d";
+	char query_stmt[100];
+	int current_level = UserDefault::getInstance()->getIntegerForKey(Constants::KEY_USER_CURRENT_LEVEL, -1);
+	sprintf(query_stmt, format_string.c_str(), current_level);
+	std::vector<std::vector<std::string>> results = Database::getQueryResults(query_stmt);
+	num_enemies = std::stoi(results[0][1]);
+	num_balls = std::stoi(results[0][2]);
+	num_hits_per_enemy = std::stof(results[0][3]);
 }
 
 
@@ -126,13 +125,12 @@ void GameLevel::saveLevel(){
 		//Save ball data
 		bool ball_state_saved = true;
 		for(auto ball : attack_balls){
-			std::string insert_ball_format = "insert into ball_save_data(ball_class, scale, posn_x, posn_y) values(%d, %f, %f, %f)";
+			std::string insert_ball_format = "insert into ball_save_data(ball_class, posn_x, posn_y) values(%d, %f, %f)";
 			char insert_ball_stmt[200];
 			int ball_class = static_cast<int> (ball->color);
-			float ball_scale = ball->getScale();
 			float posn_x = ball->getPositionX();
 			float posn_y = ball->getPositionY();
-			sprintf(insert_ball_stmt, insert_ball_format.c_str(), ball_class, ball_scale, posn_x, posn_y);
+			sprintf(insert_ball_stmt, insert_ball_format.c_str(), ball_class,  posn_x, posn_y);
 			ball_state_saved &= Database::execute(insert_ball_stmt);
 		}
 		

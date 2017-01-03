@@ -16,5 +16,6 @@ const char* Constants::KEY_USER = "user";
 const char* Constants::KEY_GAMELEVELS = "gamelevels";
 const char* Constants::KEY_AUTH_TOKEN = "auth_token";
 const char* Constants::KEY_USER_EMAIL = "email";
+const char* Constants::KEY_USER_ID = "id";
 const char* Constants::KEY_USER_CURRENT_LEVEL = "current_level_id";
 const char* Constants::KEY_ERRORS = "errors";
