@@ -55,13 +55,17 @@ void LevelTransitionScene::chooseAction(){
 /* Start a new level based on current level of user */
 void LevelTransitionScene::startNewGame(){
 	UserDefault::getInstance()->setBoolForKey(Constants::IS_RESUMED, false);
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::createScene()));
+	auto scene = Game::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, scene));
+	log("Transition for new game called");
 }
 
 /* Resume a previously saved game */
 void LevelTransitionScene::resumeGame(){
 	UserDefault::getInstance()->setBoolForKey(Constants::IS_RESUMED, true);
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::createScene()));
+	auto scene = Game::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, scene));
+	log("Transition for new game called");
 }
 
 

@@ -18,7 +18,7 @@ Scene* Game::createScene(){
 
 	// add layer as a child to scene
 	scene->addChild(layer);
-
+	log("Game create Scene called");
 	// return the scene
 	return scene;
 }
@@ -129,7 +129,7 @@ void Game::onTouchMoved(Touch* touch, Event* event){
 		auto tap = touch->getLocation();
 		for (auto ball : game_level->attack_balls){
 			if (ball->getTouch() != nullptr && ball->getTouch() == touch) {
-				log("Location of touch moved is (%f, %f)", tap.x, tap.y);
+				/* log("Location of touch moved is (%f, %f)", tap.x, tap.y); */
 				auto diff_x = tap.x - touch->getStartLocation().x;
 				auto diff_y = tap.y - touch->getStartLocation().y;
 				auto sq_dist = std::pow(diff_x, 2) + std::pow(diff_y, 2);
@@ -184,6 +184,9 @@ void Game::update(float dt){
 	if (num_enemies_left == 0){
 		log("Level complete");
 		this->unscheduleUpdate();
+		UserDefault::getInstance()->setStringForKey(Constants::LEVEL_REASON, Constants::REASON_LEVEL_FINISH);
+		auto scene = LevelTransitionScene::createScene();
+		Director::getInstance()->replaceScene(scene);
 	}
 
 	/* Handle collisions */
