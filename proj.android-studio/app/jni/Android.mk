@@ -24,7 +24,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../../Classes/sqlite3.c \
                    ../../../Classes/LoginScene.cpp \
                    ../../../Classes/Constants.cpp \
-                   ../../../Classes/LevelTransitionScene.cpp
+                   ../../../Classes/LevelTransitionScene.cpp \
+                   ../../../Classes/NetworkUtils.cpp
 
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes

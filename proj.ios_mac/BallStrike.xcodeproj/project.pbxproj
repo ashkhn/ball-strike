@@ -51,6 +51,7 @@
 		38C764101DE3F65C007831C9 /* button_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C7640D1DE3F65C007831C9 /* button_pressed.png */; };
 		38C764181DE41005007831C9 /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38C764141DE41005007831C9 /* Database.cpp */; };
 		38C764191DE41005007831C9 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 38C764161DE41005007831C9 /* sqlite3.c */; };
+		38D7BD291E1CCB98006657F3 /* NetworkUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D7BD271E1CCB98006657F3 /* NetworkUtils.cpp */; };
 		3EACC98F19EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		3EACC99019EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
@@ -198,6 +199,8 @@
 		38C764151DE41005007831C9 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		38C764161DE41005007831C9 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
 		38C764171DE41005007831C9 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
+		38D7BD271E1CCB98006657F3 /* NetworkUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUtils.cpp; sourceTree = "<group>"; };
+		38D7BD281E1CCB98006657F3 /* NetworkUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkUtils.h; sourceTree = "<group>"; };
 		3EACC98E19EE6D4300EB3C5E /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -407,6 +410,8 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				38D7BD271E1CCB98006657F3 /* NetworkUtils.cpp */,
+				38D7BD281E1CCB98006657F3 /* NetworkUtils.h */,
 				38B5D9511E1B3B8E009C3EF1 /* LevelTransitionScene.cpp */,
 				38B5D9521E1B3B8E009C3EF1 /* LevelTransitionScene.h */,
 				386150101E0D2A8300680AFB /* Constants.cpp */,
@@ -658,6 +663,7 @@
 				383EC78F1DDAE1A800B5586D /* Enemy.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				383EC7901DDAE1A800B5586D /* EnemySprite.cpp in Sources */,
+				38D7BD291E1CCB98006657F3 /* NetworkUtils.cpp in Sources */,
 				38A8AAB31DD9BFA700044F45 /* BallSprite.cpp in Sources */,
 				38A8AA931DD989F900044F45 /* HomeScene.cpp in Sources */,
 				386150121E0D2A8300680AFB /* Constants.cpp in Sources */,

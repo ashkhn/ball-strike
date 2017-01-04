@@ -80,16 +80,12 @@ void SettingsScene::initOptions(){
 /* where @auth_token : Auth token of the user */
 void SettingsScene::logoutUser(Ref* sender, ui::Widget::TouchEventType type){
 	if (type == ui::Widget::TouchEventType::ENDED){
-		network::HttpRequest *logout_req = new network::HttpRequest();
 		std::string logout_url = Constants::API_BASE_URL;
 		std::string auth_token = UserDefault::getInstance()->getStringForKey(Constants::KEY_AUTH_TOKEN, "");
 		logout_url += "/sessions/" + auth_token;
-		logout_req->setUrl(logout_url);
+		network::HttpRequest *logout_req = NetworkUtils::createNetworkRequest(logout_url, false);
 		logout_req->setRequestType(network::HttpRequest::Type::DELETE);
 		logout_req->setResponseCallback(CC_CALLBACK_2(SettingsScene::onLogoutRequestCompleted, this));
-		std::vector<std::string> headers;
-		headers.push_back("Content-Type:application/json; charset=utf-8");
-		logout_req->setHeaders(headers);
 		network::HttpClient::getInstance()->send(logout_req);
 		logout_req->release();
 	}
