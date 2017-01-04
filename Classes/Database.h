@@ -9,7 +9,6 @@ class Database {
 		static bool create(std::string table_name);
 		static void close();
 		static bool execute(std::string sql_stmt);
-		static bool createDataTables();
 		static std::vector<std::vector<std::string>> getQueryResults(const char* query);
 		static bool createSaveTables();
 		static bool createLevelTables();
