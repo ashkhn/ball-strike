@@ -1,11 +1,9 @@
 #include "LoginScene.h"
-#include "Constants.h"
-#include "spine/Json.h"
-#include "HomeScene.h"
 
-LoginScene::LoginScene(void){}
 
-LoginScene::~LoginScene(void){}
+LoginScene::LoginScene(){}
+
+LoginScene::~LoginScene(){}
 
 Scene* LoginScene::createScene(){
 	auto scene = Scene::create();
@@ -21,7 +19,7 @@ bool LoginScene::init(){
 		return false;
 	}
 		
-	_screen_size = Director::getInstance()->getVisibleSize();
+	_screen_size = Director::getInstance()->getWinSizeInPixels();
 
 	// Set the background
 	auto bg_sprite = Sprite::create("grass.png");
@@ -37,14 +35,19 @@ bool LoginScene::init(){
 	return true;
 }
 
+/* Initialize the layout */
 void LoginScene::initViews(){
+
+	/* Set container parameters */
 	container = ui::ScrollView::create();
 	container->setPosition(Point(0,0));
 	container->setContentSize(Size(_screen_size.width - 30.0f, _screen_size.height - 30.0f));
 	container->setDirection(ui::ScrollView::Direction::VERTICAL);
 	container->setInnerContainerSize(_screen_size);
 	container->setLayoutType(ui::Layout::Type::VERTICAL);
-	
+
+
+	/* Initialize text fields */
 	email_field = ui::TextField::create("","fonts/Marker Felt.ttf", 60);
 	password_field = ui::TextField::create("","fonts/Marker Felt.ttf",60);
 	email_field->setPlaceHolder("Enter email");
@@ -53,6 +56,7 @@ void LoginScene::initViews(){
 	password_field->setPlaceHolderColor(Color3B::WHITE);
 	password_field->setPasswordEnabled(true);
 	
+	/* Initialize buttons */
 	login_btn = ui::Button::create("button_normal.png", "button_pressed.png", "button_disabled.png");
 	register_btn = ui::Button::create("button_normal.png", "button_pressed.png", "button_disabled.png");
 	login_btn->setTitleText("Login");
@@ -67,6 +71,7 @@ void LoginScene::initViews(){
 	status_label = ui::Text::create("", "fonts/Marker Felt.ttf", 60);
 
 
+	/* Set layout parameters */
 	auto layout_param = ui::LinearLayoutParameter::create();
 	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
 	layout_param->setMargin(ui::Margin(0, 175, 175, 75));
@@ -84,6 +89,13 @@ void LoginScene::initViews(){
 
 }
 
+/* Called when login button is touched */
+/* @param sender: Reference to widget through which this method was called */
+/* @param type: Type of touch event which occurred */
+/* Makes a login request to the api server */
+/* Equivalent curl command: curl -X POST -H 'Content-Type: application/json; charset=utf-8' \ */
+/* 			   -d {"email": @login_email, "password": @login_password} API_BASE_URL/sessions */
+/* where @login_email: Email id used to login , @login_password: Password used for login */
 void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 	if (type == ui::Widget::TouchEventType::ENDED){
 		log("Starting login request");
@@ -110,6 +122,13 @@ void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 	}
 }
 
+/* Called when register button is touched */
+/* @param sender: Reference to widget through which this method was called */
+/* @param type: Type of touch event which occurred */
+/* Makes a register request to the api server */
+/* Equivalent curl command: curl -X POST -H 'Content-Type: application/json; charset=utf-8' \ */
+/* 			   -d {"email": @register_email, "password": @register_password} API_BASE_URL/users */
+/* where @register_email: Email id used to register , @register_password: Password used for register */
 void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
 	if (type == ui::Widget::TouchEventType::ENDED){
 		log("Starting register request");
@@ -136,6 +155,31 @@ void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
 	}
 }
 
+/* Fetch the list of game levels from api server */
+/* Equivalent curl request : curl -H 'Content-Type: application/json; charset=utf-8' -H 'Authorization:@auth_token' API_BASE_URL/gamelevels */
+/* @param auth_token: Auth token for the user */
+void LoginScene::fetchGameLevels(std::string auth_token){
+	log("Fetching game levels");
+	status_label->setString("Fetching game levels...");
+	network::HttpRequest *fetch_req = new network::HttpRequest();
+	std::string fetch_url = Constants::API_BASE_URL;
+	fetch_url += "/gamelevels";
+	fetch_req->setUrl(fetch_url);
+	fetch_req->setRequestType(network::HttpRequest::Type::GET);
+	fetch_req->setResponseCallback(CC_CALLBACK_2(LoginScene::onLevelFetchRequestCompleted, this));
+	std::vector<std::string> headers;
+	headers.push_back("Content-Type:application/json; charset=utf-8");
+	headers.push_back("Authorization:"+auth_token);
+	fetch_req->setHeaders(headers);
+	network::HttpClient::getInstance()->send(fetch_req);
+	fetch_req->release();
+}
+
+
+/* Called when the request to login user is completed */
+/* @param sender : HttpClient used for making the request */
+/* @param response: HttpResponse object containing the response of the request */
+
 void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
 
@@ -146,27 +190,35 @@ void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::H
 	Json *json = Json_create(response_data.c_str());
 	if( 200 == response->getResponseCode() ){
 		log("Success");
+		Json *user_json = Json_getItem(json, Constants::KEY_USER);
 		status_label->setString("Successfully logged in");
 		status_label->setTextColor(Color4B::GREEN);
-		UserDefault::getInstance()->setStringForKey(Constants::KEY_AUTH_TOKEN, Json_getString(json, Constants::KEY_AUTH_TOKEN, "error"));
+		std::string auth_token = Json_getString(user_json, Constants::KEY_AUTH_TOKEN, "error");
+		int current_level = Json_getInt(user_json, Constants::KEY_USER_CURRENT_LEVEL, -1);
+		int user_id = Json_getInt(user_json, Constants::KEY_USER_ID, -1);
+		UserDefault::getInstance()->setStringForKey(Constants::KEY_AUTH_TOKEN, auth_token);
 		UserDefault::getInstance()->setBoolForKey(Constants::IS_USER_LOGGED_IN, true);
-		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
+		UserDefault::getInstance()->setIntegerForKey(Constants::KEY_USER_CURRENT_LEVEL, current_level);
+		UserDefault::getInstance()->setIntegerForKey(Constants::KEY_USER_ID, user_id);
+		fetchGameLevels(auth_token);
 	}
 	else{
 		log("Failure");
 		status_label->setTextColor(Color4B::RED);
+		login_btn->setEnabled(true);
+		register_btn->setEnabled(true);
 		status_label->setString(Json_getString(json, Constants::KEY_ERRORS, "error"));
 	}
-	login_btn->setEnabled(true);
-	register_btn->setEnabled(true);
 
 }
 
+
+/* Called when the request to register user is completed */
+/* @param sender : HttpClient used for making the request */
+/* @param response: HttpResponse object containing the response of the request */
 void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
 	std::vector<char> *buffer = response->getResponseData();
 	std::string response_data(buffer->begin(), buffer->end());
-	login_btn->setEnabled(true);
-	register_btn->setEnabled(true);
 	
 	log("The response was %s", response_data.c_str());
 
@@ -179,5 +231,53 @@ void LoginScene::onRegisterRequestCompleted(network::HttpClient *sender, network
 		log("Failure");
 		status_label->setTextColor(Color4B::RED);
 		status_label->setString("Invalid data");
+	}
+	login_btn->setEnabled(true);
+	register_btn->setEnabled(true);
+
+}
+
+
+/* Called when the request to fetch game levels is completed */
+/* @param sender : HttpClient used for making the request */
+/* @param response: HttpResponse object containing the response of the request */
+void LoginScene::onLevelFetchRequestCompleted(network::HttpClient *sender, network::HttpResponse *response){
+	std::vector<char> *buffer = response->getResponseData();
+	std::string response_data(buffer->begin(), buffer->end());
+	log("The response was %s", response_data.c_str());
+	login_btn->setEnabled(true);
+	register_btn->setEnabled(true);
+
+	
+	if( 200 == response->getResponseCode() ){
+		Json* json = Json_create(response_data.c_str());
+		log("Success");
+		//TODO save game levels in db;
+		Json* level_json = Json_getItem(json, Constants::KEY_GAMELEVELS);
+		Json* level_content = level_json->child;
+		int i = 0;
+		bool insert_status = true;
+		while ( i < level_json->size ){
+			int num_enemies = Json_getInt(level_content, "num_enemies", -1);
+			int num_balls = Json_getInt(level_content, "num_balls", -1);
+			int num_hits_per_enemy  = Json_getInt(level_content, "num_hits_per_enemy", -1);
+			log("The level details for index %d are %d, %d, %d", i, num_enemies, num_balls, num_hits_per_enemy);
+			insert_status &= Database::createLevel(num_enemies, num_balls, num_hits_per_enemy);
+			i++;
+			level_content = level_content->next;
+		}
+		if(insert_status){
+			status_label->setString("Game data updated.");
+			Director::getInstance()->replaceScene(TransitionFade::create(3.0f, HomeScreen::createScene()));
+		}else{
+			status_label->setTextColor(Color4B::RED);
+			status_label->setString("Error saving game data. Please login again");
+		}
+			
+	}
+	else{
+		log("Failure");
+		status_label->setTextColor(Color4B::RED);
+		status_label->setString("Error receiving game data. Please login again");
 	}
 }

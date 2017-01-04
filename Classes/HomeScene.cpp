@@ -1,13 +1,8 @@
 #include "HomeScene.h"
-#include "GameScene.h"
-#include "SettingsScene.h"
-#include "LoginScene.h"
-#include "Constants.h"
 
+HomeScreen::HomeScreen(){}
 
-HomeScreen::HomeScreen(void){}
-
-HomeScreen::~HomeScreen(void){}
+HomeScreen::~HomeScreen(){}
 
 
 Scene* HomeScreen::createScene(){
@@ -25,7 +20,7 @@ bool HomeScreen::init(){
 		return false;
 	}
 	
-	_screen_size = Director::getInstance()->getVisibleSize();
+	_screen_size = Director::getInstance()->getWinSizeInPixels();
 
 	// Set the background
 	auto bg_sprite = Sprite::create("grass.png");
@@ -80,12 +75,14 @@ void HomeScreen::initMenu(){
 
 void HomeScreen::startGameCallback(Ref* sender){
 	UserDefault::getInstance()->setBoolForKey(Constants::IS_RESUMED, false);
-	Director::getInstance()->replaceScene(TransitionFade::create(1, Game::createScene()));
+	UserDefault::getInstance()->setStringForKey(Constants::LEVEL_REASON, Constants::REASON_NEW_GAME);
+	Director::getInstance()->replaceScene(TransitionFade::create(1, LevelTransitionScene::createScene()));
 }
 
 void HomeScreen::resumeGameCallback(Ref* sender){
 	UserDefault::getInstance()->setBoolForKey(Constants::IS_RESUMED, true);
-	Director::getInstance()->replaceScene(TransitionFade::create(1, Game::createScene()));
+	UserDefault::getInstance()->setStringForKey(Constants::LEVEL_REASON, Constants::REASON_RESUME_GAME);
+	Director::getInstance()->replaceScene(TransitionFade::create(1, LevelTransitionScene::createScene()));
 }
 
 void HomeScreen::settingsCallback(Ref* sender){

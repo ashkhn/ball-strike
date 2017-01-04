@@ -35,7 +35,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	// Create database tables
 	Database::open();
-	if (Database::createDataTables() && Database::createSaveTables()){
+	if (Database::createDataTables() && Database::createSaveTables() && Database::createLevelTables()){
 		log("Tables created successfully");
 	}
 	return true;

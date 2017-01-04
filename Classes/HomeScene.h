@@ -1,6 +1,12 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "SettingsScene.h"
+#include "LoginScene.h"
+#include "Constants.h"
+#include "LevelTransitionScene.h"
+
+
 
 #define MENU_FONT_SIZE 92
 

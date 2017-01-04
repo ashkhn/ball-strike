@@ -13,7 +13,7 @@ Enemy::Enemy(int max_hits){
 }
 
 
-Enemy::~Enemy(void){}
+Enemy::~Enemy(){}
 
 /* Helper method to carry out hit action for the enemy object */
 /* Updates the remaining hits label and current hits */

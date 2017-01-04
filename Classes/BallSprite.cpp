@@ -1,10 +1,10 @@
 #include "BallSprite.h"
 
-BallSprite::BallSprite(void){
+BallSprite::BallSprite(){
 	_velocity = Vec2(0, 0); //Initial velocity is zero
 }
 
-BallSprite::~BallSprite(void){}
+BallSprite::~BallSprite(){}
 
 const std::string BallSprite::sprite_paths[] = {"blue_ball", "green_ball", "purple_ball", "orange_ball", "red_ball"};
 
@@ -24,7 +24,7 @@ BallSprite* BallSprite::gameSpriteWithFile(std::string filename){
 
 // Helper function to generate a sprite with a random class
 BallSprite* BallSprite::generateRandomSprite(){
-	int rand_color_idx = std::rand() % NUM_CLASSES;
+	int rand_color_idx = std::rand() % Constants::NUM_CLASSES;
 	BallSprite* ball = gameSpriteWithFile(sprite_paths[rand_color_idx]);
 	std::string format_string = sprite_paths[rand_color_idx] + "_%03d.png";
 	ball->setupAnimation(format_string.c_str());
@@ -59,7 +59,7 @@ void BallSprite::setSelected(bool selected){
 void BallSprite::setupAnimation(const char* format){
 	auto sprite_cache = SpriteFrameCache::getInstance();
 	char file_name[100];
-	for (int i = 1; i <= NUM_SPRITES_PER_CLASS ; i++){
+	for (int i = 1; i <= Constants::NUM_SPRITES_PER_CLASS ; i++){
 		sprintf(file_name, format, i);
 		anim_frames.pushBack(sprite_cache->getSpriteFrameByName(file_name));
 	}

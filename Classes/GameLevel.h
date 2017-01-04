@@ -2,6 +2,8 @@
 #include "cocos2d.h"
 #include "BallSprite.h"
 #include "Enemy.h"
+#include "Database.h"
+#include "Constants.h"
 
 #define RESTITUTION_COEFF 0.8f
 #define VELOCITY_SCALE_FACTOR 8.0f
@@ -23,7 +25,7 @@ class GameLevel {
 		bool is_busy;
 		int num_balls;
 		int num_enemies;
-		float ball_scale;
+		int num_hits_per_enemy;
 		void loadValues();
 		void saveLevel();
 		void resumeLevel();
