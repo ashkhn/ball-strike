@@ -6,6 +6,7 @@
 #include "spine/Json.h"
 #include "Constants.h"
 #include "GameScene.h"
+#include "NetworkUtils.h"
 
 USING_NS_CC;
 

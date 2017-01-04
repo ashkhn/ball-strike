@@ -7,6 +7,7 @@
 #include "Constants.h"
 #include "HomeScene.h"
 #include "Database.h"
+#include "NetworkUtils.h"
 
 
 USING_NS_CC;
@@ -30,7 +31,7 @@ class LoginScene: public Layer{
 		void initViews();
 		void loginUser(Ref* sender, ui::Widget::TouchEventType type);
 		void registerUser(Ref* sender, ui::Widget::TouchEventType type);
-		void fetchGameLevels(std::string auth_token);
+		void fetchGameLevels();
 		void onLoginRequestCompleted(network::HttpClient *sender, network::HttpResponse *response);
 		void onRegisterRequestCompleted(network::HttpClient *sender, network::HttpResponse *response);
 		void onLevelFetchRequestCompleted(network::HttpClient *sender, network::HttpResponse *response);

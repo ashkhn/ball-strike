@@ -100,20 +100,16 @@ void LoginScene::loginUser(Ref* sender, ui::Widget::TouchEventType type){
 	if (type == ui::Widget::TouchEventType::ENDED){
 		log("Starting login request");
 		status_label->setString("Loading..");
-		network::HttpRequest *login_req = new network::HttpRequest();
 		std::string login_url = Constants::API_BASE_URL;
 		login_url += "/sessions";
-		login_req->setUrl(login_url);
+		network::HttpRequest *login_req = NetworkUtils::createNetworkRequest(login_url, false);
 		login_req->setRequestType(network::HttpRequest::Type::POST);
 		login_req->setResponseCallback(CC_CALLBACK_2(LoginScene::onLoginRequestCompleted, this));
-		std::vector<std::string> headers;
-		headers.push_back("Content-Type:application/json; charset=utf-8");
 		std::string login_username = email_field->getString();
 		std::string login_password = password_field->getString();
 		std::string post_data = "{\"email\":\"" + login_username + "\",\"password\":\"" + login_password + "\"}"; 
 		log("Posting data %s", post_data.c_str());
 		login_req->setRequestData(post_data.c_str(), post_data.length());
-		login_req->setHeaders(headers);
 		login_btn->setEnabled(false);
 		register_btn->setEnabled(false);
 		network::HttpClient::getInstance()->send(login_req);
@@ -133,20 +129,16 @@ void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
 	if (type == ui::Widget::TouchEventType::ENDED){
 		log("Starting register request");
 		status_label->setString("Loading..");
-		network::HttpRequest *register_req = new network::HttpRequest();
 		std::string register_url = Constants::API_BASE_URL;
 		register_url += "/users";
-		register_req->setUrl(register_url);
+		network::HttpRequest *register_req = NetworkUtils::createNetworkRequest(register_url, false);
 		register_req->setRequestType(network::HttpRequest::Type::POST);
 		register_req->setResponseCallback(CC_CALLBACK_2(LoginScene::onRegisterRequestCompleted, this));
-		std::vector<std::string> headers;
-		headers.push_back("Content-Type:application/json; charset=utf-8");
 		std::string register_username = email_field->getString();
 		std::string register_password = password_field->getString();
 		std::string post_data = "{\"user\": {\"email\":\"" + register_username + "\",\"password\":\"" + register_password + "\"}}"; 
 		log("Posting data %s", post_data.c_str());
 		register_req->setRequestData(post_data.c_str(), post_data.length());
-		register_req->setHeaders(headers);
 		register_btn->setEnabled(false);
 		login_btn->setEnabled(false);
 		network::HttpClient::getInstance()->send(register_req);
@@ -158,19 +150,14 @@ void LoginScene::registerUser(Ref* sender, ui::Widget::TouchEventType type){
 /* Fetch the list of game levels from api server */
 /* Equivalent curl request : curl -H 'Content-Type: application/json; charset=utf-8' -H 'Authorization:@auth_token' API_BASE_URL/gamelevels */
 /* @param auth_token: Auth token for the user */
-void LoginScene::fetchGameLevels(std::string auth_token){
+void LoginScene::fetchGameLevels(){
 	log("Fetching game levels");
 	status_label->setString("Fetching game levels...");
-	network::HttpRequest *fetch_req = new network::HttpRequest();
 	std::string fetch_url = Constants::API_BASE_URL;
 	fetch_url += "/gamelevels";
-	fetch_req->setUrl(fetch_url);
+	network::HttpRequest *fetch_req = NetworkUtils::createNetworkRequest(fetch_url, true);
 	fetch_req->setRequestType(network::HttpRequest::Type::GET);
 	fetch_req->setResponseCallback(CC_CALLBACK_2(LoginScene::onLevelFetchRequestCompleted, this));
-	std::vector<std::string> headers;
-	headers.push_back("Content-Type:application/json; charset=utf-8");
-	headers.push_back("Authorization:"+auth_token);
-	fetch_req->setHeaders(headers);
 	network::HttpClient::getInstance()->send(fetch_req);
 	fetch_req->release();
 }
@@ -200,7 +187,7 @@ void LoginScene::onLoginRequestCompleted(network::HttpClient *sender, network::H
 		UserDefault::getInstance()->setBoolForKey(Constants::IS_USER_LOGGED_IN, true);
 		UserDefault::getInstance()->setIntegerForKey(Constants::KEY_USER_CURRENT_LEVEL, current_level);
 		UserDefault::getInstance()->setIntegerForKey(Constants::KEY_USER_ID, user_id);
-		fetchGameLevels(auth_token);
+		fetchGameLevels();
 	}
 	else{
 		log("Failure");

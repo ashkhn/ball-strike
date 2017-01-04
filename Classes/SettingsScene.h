@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "HomeScene.h"
 #include "LoginScene.h"
+#include "NetworkUtils.h"
 
 USING_NS_CC;
 

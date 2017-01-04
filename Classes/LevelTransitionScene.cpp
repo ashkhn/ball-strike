@@ -73,18 +73,12 @@ void LevelTransitionScene::resumeGame(){
 /* Equivalent curl request: curl -H 'Content-Type:application/json; charset=utf-8' -H 'Authorization:{@auth_token}' API_BASE_URL/users/{@user_id} */
 /* where @auth_token : Auth token of the user, @user_id: Id of the user */
 void LevelTransitionScene::fetchCurrentLevel(){
-	network::HttpRequest* fetch_level_req = new network::HttpRequest();
 	int user_id = UserDefault::getInstance()->getIntegerForKey(Constants::KEY_USER_ID, -1);
-	std::string auth_token = UserDefault::getInstance()->getStringForKey(Constants::KEY_AUTH_TOKEN, "");
 	std::string fetch_url = Constants::API_BASE_URL;
 	fetch_url+= "/users/" + std::to_string(user_id);
-	fetch_level_req->setUrl(fetch_url);
+	network::HttpRequest* fetch_level_req = NetworkUtils::createNetworkRequest(fetch_url, true);
 	fetch_level_req->setRequestType(network::HttpRequest::Type::GET);
 	fetch_level_req->setResponseCallback(CC_CALLBACK_2(LevelTransitionScene::onFetchCurrentLevelCompleted, this));
-	std::vector<std::string> headers;
-	headers.push_back("Content-Type:application/json; charset=utf-8");
-	headers.push_back("Authorization:" + auth_token);
-	fetch_level_req->setHeaders(headers);
 	network::HttpClient::getInstance()->send(fetch_level_req);
 	fetch_level_req->release();
 
@@ -110,6 +104,7 @@ void LevelTransitionScene::onFetchCurrentLevelCompleted(network::HttpClient *sen
 	}
 	else{
 		//TODO handle failure
+		status_label->setString("Network error occurred. Try again later");
 	}
 }
 
@@ -120,18 +115,13 @@ void LevelTransitionScene::onFetchCurrentLevelCompleted(network::HttpClient *sen
 /* -H 'Authorization:@auth_token' -d '{"user":{"current_level_id": @level_id}}' API_BASE_URL/users/{@user_id} */
 /* where @auth_token: Auth Token of the user, @level_id: New level id for user, @user_id: Id of user */
 void LevelTransitionScene::updateCurrentLevel(int new_level_id){
-	network::HttpRequest* update_level_req = new network::HttpRequest();
-	std::string auth_token = UserDefault::getInstance()->getStringForKey(Constants::KEY_AUTH_TOKEN, "");
 	int user_id = UserDefault::getInstance()->getIntegerForKey(Constants::KEY_USER_ID, -1);
 	std::string update_url = Constants::API_BASE_URL;
 	update_url += "/users/" + std::to_string(user_id);
-	update_level_req->setUrl(update_url);
+	network::HttpRequest* update_level_req = NetworkUtils::createNetworkRequest(update_url, true);
 	update_level_req->setRequestType(network::HttpRequest::Type::PUT);
 	update_level_req->setResponseCallback(CC_CALLBACK_2(LevelTransitionScene::onUpdateCurrentLevelCompleted, this));
 	std::vector<std::string> headers;
-	headers.push_back("Content-Type:application/json; charset=utf-8");
-	headers.push_back("Authorization:" + auth_token);
-	update_level_req->setHeaders(headers);
 	std::string post_data = "{\"user\":{ \"current_level_id\":" + std::to_string(new_level_id) + "}}";
 	update_level_req->setRequestData(post_data.c_str(), post_data.length());
 	network::HttpClient::getInstance()->send(update_level_req);
@@ -160,5 +150,6 @@ void LevelTransitionScene::onUpdateCurrentLevelCompleted(network::HttpClient *se
 	}
 	else{
 		//TODO handle failure
+		status_label->setString("Network error occurred. Try again later");
 	}
 }
