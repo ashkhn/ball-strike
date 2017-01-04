@@ -1,5 +1,10 @@
 #include "NetworkUtils.h"
 
+
+/* Generates a network request object */
+/* @param url: Url for the network request */
+/* @param is_authenticated : Defines whether the request needs to include authentication headers */
+/* @return request initialized with the above parameters */
 network::HttpRequest* NetworkUtils::createNetworkRequest(std::string url, bool is_authenticated){
 	network::HttpRequest* req = new network::HttpRequest();
 	req->setUrl(url);
