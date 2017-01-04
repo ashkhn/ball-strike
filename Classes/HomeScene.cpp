@@ -50,14 +50,14 @@ void HomeScreen::initMenu(){
 	settings = MenuItemLabel::create(settings_label, CC_CALLBACK_1(HomeScreen::settingsCallback, this));
 	
 	if (save_exists){
-		auto resume_label = Label::createWithTTF("Resume game", "fonts/Marker Felt.ttf", MENU_FONT_SIZE);
-		resume_game = MenuItemLabel::create(resume_label, CC_CALLBACK_1(HomeScreen::resumeGameCallback, this));
-		resume_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 4));
+		/* auto resume_label = Label::createWithTTF("Resume game", "fonts/Marker Felt.ttf", MENU_FONT_SIZE); */
+		/* resume_game = MenuItemLabel::create(resume_label, CC_CALLBACK_1(HomeScreen::resumeGameCallback, this)); */
+		/* resume_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 4)); */
 		start_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 3));
 		settings->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 2));
 		quit_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 5) * 1));
 
-		menu = Menu::create(resume_game, start_game, settings, quit_game, NULL);
+		menu = Menu::create(start_game, settings, quit_game, NULL);
 	}
 	else{
 		start_game->setPosition(Point(_screen_size.width / 2, (_screen_size.height / 4) * 3));

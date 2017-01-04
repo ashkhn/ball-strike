@@ -110,6 +110,7 @@ void LevelTransitionScene::onFetchCurrentLevelCompleted(network::HttpClient *sen
 
 
 /* Sends a PUT request to server update the current level of the user */
+/* Ideally should be a PATCH request but cocos2dx doesn't support PATCH requests so using PUT */
 /* @param new_level_id : The new level of the user to be updated */
 /* Equivalent curl request: curl -x PUT -H 'Content-Type:application/json; charset= utf-8' \ */
 /* -H 'Authorization:@auth_token' -d '{"user":{"current_level_id": @level_id}}' API_BASE_URL/users/{@user_id} */
@@ -119,6 +120,7 @@ void LevelTransitionScene::updateCurrentLevel(int new_level_id){
 	std::string update_url = Constants::API_BASE_URL;
 	update_url += "/users/" + std::to_string(user_id);
 	network::HttpRequest* update_level_req = NetworkUtils::createNetworkRequest(update_url, true);
+	
 	update_level_req->setRequestType(network::HttpRequest::Type::PUT);
 	update_level_req->setResponseCallback(CC_CALLBACK_2(LevelTransitionScene::onUpdateCurrentLevelCompleted, this));
 	std::vector<std::string> headers;
