@@ -14,6 +14,7 @@ class Game : public Layer{
 		virtual bool init() override;
 		Size _screen_size;
 		GameLevel* game_level;
+		int num_enemies_left;
 		CREATE_FUNC(Game);
 		virtual void update(float dt) override;
 		void generateLevel(bool is_resumed);
