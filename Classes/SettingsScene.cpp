@@ -1,10 +1,4 @@
 #include "SettingsScene.h"
-#include "Database.h"
-#include "HomeScene.h"
-
-static std::vector<int> num_enemy_values = {2, 4, 8, 10};
-static std::vector<int> num_ball_values = {1, 2, 3, 4};
-static std::vector<float> scale_values = {0.3, 0.4, 0.5, 0.8, 1.0, 1.3, 1.4, 1.5, 1.8, 2.0};
 
 SettingsScene::SettingsScene(void){}
 
@@ -42,7 +36,12 @@ bool SettingsScene::init(){
 /* Handle back button press on android */
 void SettingsScene::handleBack(EventKeyboard::KeyCode key_code, Event* event){
 	if (key_code == EventKeyboard::KeyCode::KEY_BACK){
-		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
+		if(UserDefault::getInstance()->getBoolForKey(Constants::IS_USER_LOGGED_IN, true)){
+			Director::getInstance()->replaceScene(TransitionFade::create(1.0f, HomeScreen::createScene()));
+		}
+		else{
+			Director::getInstance()->replaceScene(TransitionFade::create(1.0f, LoginScene::createScene()));
+		}
 	}
 }
 
@@ -56,92 +55,61 @@ void SettingsScene::initOptions(){
 	auto container_size = Size(_screen_size.width, _screen_size.height);
 	container->setInnerContainerSize(container_size);
 	container->setLayoutType(ui::Layout::Type::VERTICAL);
-	getPreviousValues();
-	addSlider("Number of enemies: %d", num_enemy_values, chosen_num_enemies);
-	addSlider("Number of balls: %d", num_ball_values, chosen_num_balls);
-	addSlider("Scaling of ball: %f", scale_values, chosen_scale);
-	
-    auto save_btn = ui::Button::create("button_normal.png", "button_pressed.png", "button_disabled.png");
-	save_btn->setTitleText("Save");
-	save_btn->setTitleColor(cocos2d::Color3B::BLACK);
-	save_btn->addTouchEventListener(CC_CALLBACK_2(SettingsScene::saveValues, this));
-	save_btn->setScale(6);
+
+    auto logout_btn = ui::Button::create("button_normal.png", "button_pressed.png", "button_disabled.png");
+	logout_btn->setTitleText("Logout");
+	logout_btn->setTitleColor(cocos2d::Color3B::BLACK);
+	logout_btn->addTouchEventListener(CC_CALLBACK_2(SettingsScene::logoutUser, this));
+	logout_btn->setScale(6);
 	auto layout_param = ui::LinearLayoutParameter::create();
 	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
-	layout_param->setMargin(ui::Margin(MARGIN, MARGIN, MARGIN, MARGIN));
-	save_btn->setLayoutParameter(layout_param);
+	layout_param->setMargin(ui::Margin(75, 475, 75, 75));
+	logout_btn->setLayoutParameter(layout_param);
 
-	container->addChild(save_btn);
+	status_label = ui::Text::create("", "fonts/Marker Felt.ttf", 90);
+	status_label->setLayoutParameter(layout_param);
+
+	container->addChild(logout_btn);
+	container->addChild(status_label);
 	this->addChild(container);
 
 }
 
-/* Load the previous game configuration from the database */
-void SettingsScene::getPreviousValues(){
-	std::string get_stmt = "select * from game_data";
-	std::vector<std::vector<std::string>> results = Database::getQueryResults(get_stmt.c_str());
-	chosen_num_enemies = std::stoi(results[1][0]);
-	chosen_num_balls = std::stoi(results[1][1]);
-	chosen_scale = std::stof(results[1][2]);
-}
-
-/* Add a slider to the settings layout */
-/* @param format_string : Format string for the label text of the slider */
-/* @param vector<T> values : Vector containing the set of possible values the slider can take */
-/* @param chosen_value : The selected value of the slider */ 
-template<class T> void SettingsScene::addSlider(std::string format_string, std::vector<T> values, T &chosen_value){
-	char slider_label[100];
-	sprintf(slider_label, format_string.c_str(), chosen_value);
-	auto slider_hint = ui::Text::create(format_string, "fonts/arial.ttf", SETTINGS_FONT_SIZE);
-
-	// Initialize slider
-	auto slider = ui::Slider::create();
-	slider->loadBarTexture("slider_back.png");
-	slider->loadSlidBallTextures("slidernode_normal.png", "slidernode_pressed.png", "slidernode_disable.png");
-	slider->loadProgressBarTexture("slider_pressbar.png");
-
-	// Calculate the intial position based on previously saved values
-	int initial_idx = std::find(values.begin(), values.end(), chosen_value) - values.begin();
-	//TODO add checks
-	int initial_percent = ( (float) (initial_idx + 1) / values.size()) * 100;
-	slider->setPercent(initial_percent);
-	auto &local_value = chosen_value;
-
-	//Setup listener to listen to change event
-	slider->addEventListener([values, slider_hint, &local_value, format_string](Ref* sender, ui::Slider::EventType type){
-			auto slider = dynamic_cast<ui::Slider*>(sender);
-			if(type == ui::Slider::EventType::ON_PERCENTAGE_CHANGED){
-				// Get the chosen value based on values vector and current percentage
-				int chosen_value_idx = (values.size()) * slider->getPercent() / 100;
-				chosen_value_idx = (slider->getPercent() == 100 ? chosen_value_idx - 1 : chosen_value_idx);
-				local_value = values[chosen_value_idx];
-
-				// Set label based on chosen value
-				char slider_label[100];
-				sprintf(slider_label, format_string.c_str(), local_value);
-				slider_hint->setString(slider_label);
-			}
-			});
-	slider_hint->setString(slider_label);
-
-	slider->setPosition(Vec2(_screen_size.width / 2, _screen_size.height / 2));
-	slider->setScale(SLIDER_SCALE);
-	auto layout_param = ui::LinearLayoutParameter::create();
-	layout_param->setGravity(ui::LinearLayoutParameter::LinearGravity::CENTER_HORIZONTAL);
-	layout_param->setMargin(ui::Margin(MARGIN, MARGIN, MARGIN, MARGIN));
-	slider_hint->setLayoutParameter(layout_param);
-	slider->setLayoutParameter(layout_param);
-	container->addChild(slider_hint);
-	container->addChild(slider);
-}
-
-// Saves the selected values to database
-void SettingsScene::saveValues(Ref* sender, ui::Widget::TouchEventType type){
-
-	char update_stmt[200];
-	const std::string format_string = "update game_data set num_enemies=%d, num_balls=%d, scale=%f";
+/* Sends a logout request to server */
+/* Equivalent curl request: curl -X DELETE -H 'Content-Type:application/json; charset=utf-8' API_BASE_URL/sessions/{@auth_token} */
+/* where @auth_token : Auth token of the user */
+void SettingsScene::logoutUser(Ref* sender, ui::Widget::TouchEventType type){
 	if (type == ui::Widget::TouchEventType::ENDED){
-		sprintf(update_stmt, format_string.c_str(), chosen_num_enemies, chosen_num_balls, chosen_scale);
-		log("Status of save is %d", Database::execute(update_stmt));
+		network::HttpRequest *logout_req = new network::HttpRequest();
+		std::string logout_url = Constants::API_BASE_URL;
+		std::string auth_token = UserDefault::getInstance()->getStringForKey(Constants::KEY_AUTH_TOKEN, "");
+		logout_url += "/sessions/" + auth_token;
+		logout_req->setUrl(logout_url);
+		logout_req->setRequestType(network::HttpRequest::Type::DELETE);
+		logout_req->setResponseCallback(CC_CALLBACK_2(SettingsScene::onLogoutRequestCompleted, this));
+		std::vector<std::string> headers;
+		headers.push_back("Content-Type:application/json; charset=utf-8");
+		logout_req->setHeaders(headers);
+		network::HttpClient::getInstance()->send(logout_req);
+		logout_req->release();
 	}
+}
+
+
+/* Called when the request to logout user is completed */
+/* @param sender : HttpClient used for making the request */
+/* @param response: HttpResponse object containing the response of the request */
+void SettingsScene::onLogoutRequestCompleted(network::HttpClient* client, network::HttpResponse *response){
+	std::vector<char> *buffer = response->getResponseData();
+	std::string response_data(buffer->begin(), buffer->end());
+	if(204 == response->getResponseCode()){
+		UserDefault::getInstance()->setBoolForKey(Constants::IS_USER_LOGGED_IN, false);
+		status_label->setString("Successfully logged out");
+		status_label->setTextColor(Color4B::GREEN);
+	}
+	else{
+		status_label->setString("Error occurred. Please try again later");
+		status_label->setTextColor(Color4B::RED);
+	}
+
 }

@@ -96,6 +96,8 @@ void Game::generateLevel(bool is_resumed){
 		this->addChild(enemy->sprite);
 		this->addChild(enemy->hits_left);
 	}
+
+	num_enemies_left = game_level->enemies.size();
 }
 
 /* Called when a user's finger lands on screen */
@@ -165,18 +167,23 @@ void Game::update(float dt){
 
 	/* Check if all enemies are killed */
 	//TODO replace with boolean condition check
-	bool is_level_complete = true;
-	for (auto enemy : game_level->enemies){
-		if(enemy->current_hits == enemy->max_hits){
-			is_level_complete = false;
-		}
-	}
+	/* bool is_level_complete = true; */
+	/* for (auto enemy : game_level->enemies){ */
+	/* 	if(enemy->current_hits == enemy->max_hits){ */
+	/* 		is_level_complete = false; */
+	/* 	} */
+	/* } */
 
-	if(is_level_complete){
-		log("level completed");
+	/* if(is_level_complete){ */
+	/* 	log("level completed"); */
+	/* 	this->unscheduleUpdate(); */
+	/* 	UserDefault::getInstance()->setStringForKey(Constants::LEVEL_REASON, Constants::REASON_LEVEL_FINISH); */
+	/* 	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, LevelTransitionScene::createScene())); */
+	/* } */
+
+	if (num_enemies_left == 0){
+		log("Level complete");
 		this->unscheduleUpdate();
-		UserDefault::getInstance()->setStringForKey(Constants::LEVEL_REASON, Constants::REASON_LEVEL_FINISH);
-		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, LevelTransitionScene::createScene()));
 	}
 
 	/* Handle collisions */
@@ -262,6 +269,7 @@ void Game::update(float dt){
 						game_level->enemies.erase(enemy_posn);
 						enemy->sprite->runAction(RemoveSelf::create());
 						enemy->hits_left->runAction(RemoveSelf::create());
+						num_enemies_left--;
 					}
 				}
 			}
@@ -278,7 +286,7 @@ void Game::update(float dt){
 			ball->setNextPosition(ball_next_posn);
 			ball->setPosition(ball->getNextPosition());
 		}
-			
+
 	}
 }
 
